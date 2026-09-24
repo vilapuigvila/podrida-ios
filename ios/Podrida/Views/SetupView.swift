@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The "new game" card: how many players, their names, and how many turns.
+/// The new-game screen: how many players, their names, and how many turns.
 struct SetupView: View {
     let onStart: (Game) -> Void
 
@@ -45,29 +45,29 @@ struct SetupView: View {
                 field("Turns") {
                     BoxedStepper(title: "Turns", value: $turnCount, range: 1...Game.maxTurns)
                 }
-
-                Button("Open the Ledger →") {
-                    onStart(.starting(names: names, turnCount: turnCount))
-                }
-                .buttonStyle(PrimaryButtonStyle())
-                .padding(.top, 10)
             }
             .padding(.horizontal, 26)
             .padding(.top, 34)
-            .padding(.bottom, 30)
-            // Shadow the paper only; on the whole card it would also smudge every line of text.
-            .background {
-                RoundedRectangle(cornerRadius: 4)
-                    .fill(Palette.paper)
-                    .shadow(color: .black.opacity(0.5), radius: 22, y: 20)
-            }
-            .frame(maxWidth: 420)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 56)
+            .padding(.bottom, 24)
+            .frame(maxWidth: 420, alignment: .leading)
             .frame(maxWidth: .infinity)
         }
         .scrollDismissesKeyboard(.interactively)
-        .background(Palette.desk.ignoresSafeArea())
+        // The main action stays at the bottom of the screen, above the home indicator.
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            Button("Open the Ledger →") {
+                onStart(.starting(names: names, turnCount: turnCount))
+            }
+            .buttonStyle(PrimaryButtonStyle())
+            .frame(maxWidth: 368)
+            .padding(.horizontal, 26)
+            .padding(.top, 12)
+            .padding(.bottom, 16)
+            .frame(maxWidth: .infinity)
+            .background(Palette.paper)
+            .overlay(alignment: .top) { Rectangle().fill(Palette.line).frame(height: 1) }
+        }
+        .background(Palette.paper.ignoresSafeArea())
     }
 
     /// Changing the count keeps names already typed for the remaining seats.

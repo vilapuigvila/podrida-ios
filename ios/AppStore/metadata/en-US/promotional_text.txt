@@ -1,0 +1,1 @@
+Keep score for Podrida at the table: every player a column, every turn a line, running totals, and the calling rule checked for you.

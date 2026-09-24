@@ -23,6 +23,7 @@ ios/                 Native SwiftUI app
   Podrida/Model/     Game rules, saving, keyboard order (no UI)
   Podrida/Views/     Setup screen, ledger, theme
   PodridaTests/      Unit tests for the rules and saving
+  AppStore/          Listing text, screenshots and the submission checklist
 ```
 
 ## Running
@@ -43,6 +44,8 @@ Run the tests:
 xcodebuild test -project ios/Podrida.xcodeproj -scheme Podrida \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
+
+To publish, follow [ios/AppStore/README.md](ios/AppStore/README.md).
 
 If you edit `ios/project.yml`, regenerate the project:
 

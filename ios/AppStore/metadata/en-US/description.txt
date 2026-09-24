@@ -1,0 +1,22 @@
+Podrida Score keeps the score for Podrida, the trick-taking card game where everyone calls how many hands they'll win each turn.
+
+It's a ledger, like the one you'd draw on paper: every player gets a column, every turn gets a line. Enter what each player called and what they won, and the score adds itself up.
+
+SCORING
+• Exact call: 5 points, plus 3 for each hand won
+• Miss: minus 5, and minus 3 for each hand off
+• Each line shows the running total, so you always know where everyone stands
+• The leader's total gets a high-score stamp
+
+THE RULE, CHECKED
+Once everyone has called, the calls in a turn can't add up to the turn number. Podrida Score spots it and waits until someone changes their call. Turns unlock one at a time, so no one scores the wrong line.
+
+MADE FOR THE TABLE
+• Up to 24 players and 300 turns
+• Player names and totals stay in view while you scroll
+• Rename players or add one mid-game
+• Calls first, then results: the keyboard moves through a turn the way it's played
+• The screen stays on while you play
+• Your game is saved as you go, even if you close the app
+
+Works offline. No account, no ads, no tracking.

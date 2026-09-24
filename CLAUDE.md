@@ -50,6 +50,10 @@ Swift 6 language mode (strict concurrency), iOS 18+. `onScrollGeometryChange` an
 - **`LedgerGrid`** pins the player names, the turn numbers and the totals row by keeping them outside the one two-axis `ScrollView` and offsetting them by its scroll position (`ScrollOffset`, read only by `Synced`). A pinned piece must use `.frame(minWidth: 0, …)` or `.frame(minHeight: 0, …)` before `.clipped()`. Without the zero minimum, the frame grows to its content's full size and pushes the totals off screen. Row height is a fixed constant shared by the turn column and the cells, so the two stay aligned.
 - **Editing:** only the active turn's row, plus a turn the keyboard is still in, gets `TextField`s; every other cell is plain `Text`. `LedgerField.next/previous` defines the keyboard order: all calls, then all results, then on to the next turn only if this one is complete.
 
+## App Store (`ios/AppStore`)
+
+Listing text (fastlane `deliver` layout under `metadata/`), captioned screenshots, the privacy policy text, `ExportOptions.plist`, and `README.md`, the submission checklist. After a UI change, regenerate the screenshots with `ios/AppStore/tools/capture.sh`. It seeds the demo games from `tools/states.py` into the app's saved state on an iPhone 17 Pro Max and an iPad Pro 13" simulator, captures four screens, and captions them with `tools/frame.py`. `support_url.txt` and `privacy_url.txt` are placeholders until real URLs exist. `Podrida/PrivacyInfo.xcprivacy` must keep declaring UserDefaults (reason CA92.1) while the app uses it. The signing team is set in `project.yml`, so regenerating keeps it.
+
 ## Published artifact
 
 A private claude.ai artifact, https://claude.ai/code/artifact/8b82c550-d0af-4a1c-bd01-39dad39e2de7, runs an adapted copy of the web page that isn't in this repo. That copy saves to `localStorage` instead of `window.storage`, and it has no document skeleton because the artifact host adds one. Editing `podrida-score.html` doesn't update the artifact. In artifacts, load Google Fonts with a `<link>` tag: the host's URL rewriting breaks a CSS `@import`.

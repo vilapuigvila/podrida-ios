@@ -12,8 +12,8 @@ struct RootView: View {
                 SetupView { store.game = $0 }
             }
         }
-        // Setup sits on the dark desk, the ledger on light paper; match the status bar and keyboard.
-        .preferredColorScheme(store.game == nil ? .dark : .light)
+        // Both screens are light paper; keep the status bar, keyboard and alerts light in dark mode too.
+        .preferredColorScheme(.light)
     }
 
     /// The ledger's binding to the game. SwiftUI can still read it (and a field can still write to it)

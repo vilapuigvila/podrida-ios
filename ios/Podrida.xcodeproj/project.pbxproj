@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06168C8B04B0BD876660C1D7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9E515D3B9389AE47281D2309 /* PrivacyInfo.xcprivacy */; };
 		32BB3D439ECF2F80EBF354DC /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303A8CA62955B46CB9C2138E /* RootView.swift */; };
 		3D14F64FD2654E4BDA1E5880 /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF25E69FD9CCC0651588DED3 /* GameStore.swift */; };
 		48D356E4A73F360522BFAF88 /* PodridaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABB85FD4734332E002DBFB8 /* PodridaApp.swift */; };
@@ -40,6 +41,7 @@
 		63CCF34401E1B489728D228F /* PodridaTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PodridaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72CA7B1EAFD890FDD4AB7790 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A479C4522923A8BD617DA7E /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		9E515D3B9389AE47281D2309 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A3634AADF1B7CC44A6EA834E /* LedgerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerField.swift; sourceTree = "<group>"; };
 		AF25E69FD9CCC0651588DED3 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
 		C16420C2F66411BF8E68B68D /* GameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTests.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 				72CA7B1EAFD890FDD4AB7790 /* Assets.xcassets */,
 				0AB3FFC6D1F6698E1AC0FB51 /* Info.plist */,
 				0ABB85FD4734332E002DBFB8 /* PodridaApp.swift */,
+				9E515D3B9389AE47281D2309 /* PrivacyInfo.xcprivacy */,
 				3A03BB06511C224A875E2E80 /* Model */,
 				BEDABB3111D5F1EA8A8FFA45 /* Views */,
 			);
@@ -160,6 +163,7 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					F1E53C198F7E04962A277BCC = {
+						DevelopmentTeam = HL99S7U2Q3;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -190,6 +194,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1161F58BEFBC3B9D7635E16 /* Assets.xcassets in Resources */,
+				06168C8B04B0BD876660C1D7 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +326,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = HL99S7U2Q3;
 				INFOPLIST_FILE = Podrida/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -397,6 +403,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = HL99S7U2Q3;
 				INFOPLIST_FILE = Podrida/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

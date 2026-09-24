@@ -1,0 +1,1 @@
+First release of Podrida Score: a ledger for keeping score in Podrida, with running totals, the calling rule checked for you, and your game saved as you play.

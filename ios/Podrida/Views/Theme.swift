@@ -8,7 +8,6 @@ enum Palette {
     static let ink = Color(hex: 0x202B21)
     static let inkSoft = Color(hex: 0x5B6B57)
     static let brass = Color(hex: 0xA9812E)
-    static let desk = Color(hex: 0x161F1A)
 }
 
 /// Built-in faces standing in for the web version's Google Fonts, so the app looks the same offline.
