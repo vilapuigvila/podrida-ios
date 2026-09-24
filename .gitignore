@@ -1,3 +1,53 @@
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Xcode — per-user state and build output
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+build/
+DerivedData/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+# Uncomment to not track resolved dependency versions:
+# Package.resolved
+
+# CocoaPods / Carthage
+Pods/
+Carthage/Build/
+Carthage/Checkouts/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Code injection / tooling
+iOSInjectionProject/
+*.xcresult
+
+# Secrets and local config
+*.mobileprovision
+*.p12
+*.cer
+.env
+.env.*
+
+# Local tools
 .claude/settings.local.json
 .playwright-mcp/
