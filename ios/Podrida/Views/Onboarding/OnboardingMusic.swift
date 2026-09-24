@@ -8,11 +8,11 @@ final class OnboardingMusic {
         case jazz = "onboarding-jazz"
         case chiptune = "onboarding-chiptune"
 
-        /// Evens out the loudness: the chiptune is brighter and sounds louder at the same level.
+        /// The files peak at -1 dBTP; these even out their loudness, well below full scale.
         var volume: Float {
             switch self {
-            case .jazz: 0.6
-            case .chiptune: 0.45
+            case .jazz: 0.48
+            case .chiptune: 0.63
             }
         }
     }

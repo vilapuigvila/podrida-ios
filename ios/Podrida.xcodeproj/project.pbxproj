@@ -55,33 +55,33 @@
 /* Begin PBXFileReference section */
 		03CF8DF61D672DF9F1C4221C /* ScoreSounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreSounds.swift; sourceTree = "<group>"; };
 		03FC118A170EC627F9109B6F /* stamp.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = stamp.json; sourceTree = "<group>"; };
-		064DD6E9A23E6BA3FDE8B7E9 /* PodridaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PodridaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		064DD6E9A23E6BA3FDE8B7E9 /* PodridaUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PodridaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB3FFC6D1F6698E1AC0FB51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0ABB85FD4734332E002DBFB8 /* PodridaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodridaApp.swift; sourceTree = "<group>"; };
 		1A607214943B355C12FCE9D0 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		2E5DD8C549A8D8C800C5A31C /* LedgerGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerGrid.swift; sourceTree = "<group>"; };
 		303A8CA62955B46CB9C2138E /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
-		63CCF34401E1B489728D228F /* PodridaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PodridaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		63CCF34401E1B489728D228F /* PodridaTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PodridaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72CA7B1EAFD890FDD4AB7790 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		74C6F07765505EF608F1EB0F /* RuleAlertUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleAlertUITests.swift; sourceTree = "<group>"; };
-		841B37B4190C33107FAFB1A4 /* score-gain.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "score-gain.caf"; sourceTree = "<group>"; };
+		841B37B4190C33107FAFB1A4 /* score-gain.caf */ = {isa = PBXFileReference; path = "score-gain.caf"; sourceTree = "<group>"; };
 		9A479C4522923A8BD617DA7E /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		9E515D3B9389AE47281D2309 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		9E515D3B9389AE47281D2309 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A3634AADF1B7CC44A6EA834E /* LedgerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerField.swift; sourceTree = "<group>"; };
 		AF25E69FD9CCC0651588DED3 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
 		B3E57DD2685064A383D914D5 /* OnboardingMusic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingMusic.swift; sourceTree = "<group>"; };
 		B4CA0AE2A59EF77416DD340F /* deal.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = deal.json; sourceTree = "<group>"; };
 		C16420C2F66411BF8E68B68D /* GameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTests.swift; sourceTree = "<group>"; };
-		C6082D7E3BAF1994319F5CFA /* score-loss.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "score-loss.caf"; sourceTree = "<group>"; };
+		C6082D7E3BAF1994319F5CFA /* score-loss.caf */ = {isa = PBXFileReference; path = "score-loss.caf"; sourceTree = "<group>"; };
 		CE5FC6CCA551D1C801C192F4 /* Podrida.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Podrida.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB7110EAF96E1E758429E524 /* TurnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnCell.swift; sourceTree = "<group>"; };
 		EBBFC06E3180A761108CEF6D /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		F288DDB4B072B526B52B102E /* crown.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = crown.json; sourceTree = "<group>"; };
-		F63912EBB5713915313F1782 /* onboarding-jazz.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "onboarding-jazz.caf"; sourceTree = "<group>"; };
+		F63912EBB5713915313F1782 /* onboarding-jazz.caf */ = {isa = PBXFileReference; path = "onboarding-jazz.caf"; sourceTree = "<group>"; };
 		FCE18282B0525632B210AE07 /* call.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = call.json; sourceTree = "<group>"; };
 		FDE1FCCFAC31585FA319FE3B /* LedgerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerView.swift; sourceTree = "<group>"; };
 		FDEF90385A6B4A1536439439 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
-		FE0D66FEC2147B62D6652C41 /* onboarding-chiptune.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "onboarding-chiptune.caf"; sourceTree = "<group>"; };
+		FE0D66FEC2147B62D6652C41 /* onboarding-chiptune.caf */ = {isa = PBXFileReference; path = "onboarding-chiptune.caf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -381,8 +381,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -390,7 +388,6 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pskmoons.podrida.tests;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Podrida.app/Podrida";
@@ -431,7 +428,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -466,8 +463,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -475,7 +470,6 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pskmoons.podrida.uitests;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Podrida;
@@ -486,8 +480,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -495,7 +487,6 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pskmoons.podrida.uitests;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Podrida;
@@ -555,7 +546,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -602,8 +593,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -611,7 +600,6 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pskmoons.podrida.tests;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Podrida.app/Podrida";

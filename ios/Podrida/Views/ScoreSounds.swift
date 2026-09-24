@@ -24,7 +24,7 @@ final class ScoreSounds {
         guard let url = Bundle.main.url(forResource: sound.rawValue, withExtension: "caf"),
               let player = try? AVAudioPlayer(contentsOf: url)
         else { return nil }
-        player.volume = 0.7
+        player.volume = 0.55  // the files peak at -1 dBTP
         player.prepareToPlay()
         players[sound] = player
         return player
