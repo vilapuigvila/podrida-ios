@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Writes the onboarding's background music into Podrida/Resources.
 
-Original loops synthesized here, so there's nothing to license. Four styles:
+Original loops synthesized here, so there's nothing to license, plus the ledger's two score sounds
+(a chime for points won, a sad trombone for points lost). Four music styles:
 
   guitar     Nylon-guitar arpeggio over Am - G - F - E, marimba melody, soft bass and shaker
   musicbox   A music-box waltz in C, bells over a broken-chord accompaniment
@@ -74,7 +75,7 @@ def bell(freq, seconds=2.2):
 def epiano(freq, seconds=2.0):
     """Rhodes-style electric piano: warm body, a bright tine at the attack, slow tremolo."""
     t = times(seconds)
-    body = np.sin(2 * np.pi * freq * t + 0.6 * np.sin(2 * np.pi * freq * t) * np.exp(-t * 4))
+    body = np.sin(2 * np.pi * freq * t + 0.35 * np.sin(2 * np.pi * freq * t) * np.exp(-t * 4))
     tine = 0.18 * np.sin(2 * np.pi * freq * 7 * t) * np.exp(-t * 18)
     tremolo = 1 - 0.12 * (1 + np.sin(2 * np.pi * 4.5 * t)) / 2
     return (body * np.exp(-t * 1.3) + tine) * tremolo * np.minimum(1, t / 0.005)
@@ -96,8 +97,10 @@ def bass(freq, seconds, decay=1.4):
 def upright(freq, seconds):
     """Upright bass: a thumpy attack and a round, quickly fading tone."""
     t = times(seconds)
-    tone = np.sin(2 * np.pi * freq * t) + 0.4 * np.sin(2 * np.pi * freq * 2 * t) * np.exp(-t * 6)
-    tone += 0.15 * np.sin(2 * np.pi * freq * 3 * t) * np.exp(-t * 12)
+    # Light on the fundamental and heavier on the harmonics, so it still reads on a phone speaker
+    # without piling up energy below 120 Hz that the speaker can only distort.
+    tone = 0.6 * np.sin(2 * np.pi * freq * t) + 0.5 * np.sin(2 * np.pi * freq * 2 * t) * np.exp(-t * 4)
+    tone += 0.22 * np.sin(2 * np.pi * freq * 3 * t) * np.exp(-t * 9)
     return tone * np.exp(-t * 2.2) * np.minimum(1, t / 0.006)
 
 
@@ -130,9 +133,23 @@ def noise(seconds, decay, tilt=True):
 
 
 def kick(seconds=0.25):
+    # Pitched high enough (90 Hz and up) for a phone speaker to play without distorting.
+    time = times(seconds)
+    sweep = 90 + 140 * np.exp(-time * 30)
+    return np.sin(2 * np.pi * np.cumsum(sweep) / RATE) * np.exp(-time * 16)
+
+
+def brass(freq, seconds, droop=0.0):
+    """Muted trombone: harmonics that open up after the attack, a vibrato that grows, and an
+    optional droop in pitch across the note."""
     t = times(seconds)
-    sweep = 50 + 90 * np.exp(-t * 30)
-    return np.sin(2 * np.pi * np.cumsum(sweep) / RATE) * np.exp(-t * 14)
+    vibrato = 1 + 0.012 * np.minimum(1, t / 0.35) * np.sin(2 * np.pi * 5.5 * t)
+    inst = freq * (1 - droop * t / seconds) * vibrato
+    phase = 2 * np.pi * np.cumsum(inst) / RATE
+    open_up = 0.25 + 0.45 * (1 - np.exp(-t * 9)) * np.exp(-t * 1.2)
+    tone = sum((open_up ** (k - 1)) / k * np.sin(k * phase) for k in range(1, 9))
+    envelope = np.minimum(1, t / 0.03) * np.clip((seconds - t) / 0.12, 0, 1)
+    return tone * envelope
 
 
 # --- Mixing --------------------------------------------------------------------------------------
@@ -151,8 +168,9 @@ class Track:
         np.add.at(self.audio[0], idx, sound * left)
         np.add.at(self.audio[1], idx, sound * right)
 
-    def finish(self, room=1.8, mix=0.28):
-        """Circular convolution with a decaying-noise impulse, so the tail wraps into the loop start."""
+    def finish(self, room=1.8, mix=0.28, highpass=None):
+        """Circular convolution with a decaying-noise impulse, so the tail wraps into the loop start.
+        `highpass` (Hz) rolls off the sub-bass, which phone speakers can't play and only distort."""
         n = int(room * RATE)
         t = np.arange(n) / RATE
         wet = np.empty_like(self.audio)
@@ -163,6 +181,10 @@ class Track:
             impulse /= np.sqrt(np.sum(impulse ** 2))
             wet[channel] = np.fft.irfft(np.fft.rfft(self.audio[channel]) * np.fft.rfft(impulse), self.length)
         audio = (1 - mix) * self.audio + mix * wet
+        if highpass:
+            freqs = np.fft.rfftfreq(self.length, 1 / RATE)
+            response = freqs ** 4 / (freqs ** 4 + highpass ** 4)  # 24 dB/octave, zero-phase
+            audio = np.fft.irfft(np.fft.rfft(audio, axis=1) * response, self.length, axis=1)
         return audio / (np.max(np.abs(audio)) / 0.7)  # about -3 dBFS
 
 
@@ -264,7 +286,7 @@ def jazz():
             for n, tone in enumerate(chord):
                 track.add(epiano(note(tone), 1.6), b + hit + n * 0.015 + humanize(0.01), gain=gain, pan=-0.25)
         for beat, tone in enumerate(walk[bar]):
-            track.add(upright(note(tone), track.beat * 1.1), b + beat + humanize(0.008), gain=0.55, pan=0.05)
+            track.add(upright(note(tone), track.beat * 1.1), b + beat + humanize(0.008), gain=0.34, pan=0.05)
         # Brushes: the ride pattern (1, 2, "and" of 2, 3, 4, "and" of 4), plus a soft swish on 2 and 4.
         for beat in (0, 1, 1 + swing, 2, 3, 3 + swing):
             accent = 0.05 if beat in (1, 3) else 0.032
@@ -273,13 +295,14 @@ def jazz():
             track.add(noise(0.35, 8, tilt=False) * 0.4, b + beat - 0.1, gain=0.05, pan=0.3)
     for bar, beat, name, length in melody:
         track.add(vibes(note(name), max(1.4, length * track.beat * 2)), bar * 4 + beat + humanize(0.01), gain=0.2, pan=0.25)
-    return track.finish(room=1.4, mix=0.22)
+    return track.finish(room=1.4, mix=0.22, highpass=70)
 
 
 def chiptune():
     track = Track(bpm=140, beats=32)
     chords = [["C4", "E4", "G4"], ["B3", "D4", "G4"], ["C4", "E4", "A4"], ["C4", "F4", "A4"]]
-    roots = ["C2", "G2", "A2", "F2"]
+    # An octave above a console's usual bass, which on a phone speaker is mostly distortion.
+    roots = ["C3", "G3", "A3", "F3"]
     tune = [
         ["E5", None, "G5", None, "C6", "B5", "G5", "E5"],
         ["D5", None, "G5", None, "B5", "A5", "G5", "D5"],
@@ -292,32 +315,52 @@ def chiptune():
     ]
     step = track.beat / 2
     for bar in range(8):
-        b = bar * 4
+        start = bar * 4
         chord = chords[bar % 4]
         for sixteenth in range(16):
             tone = chord[sixteenth % 3]
-            track.add(pulse(note(tone), track.beat / 4, duty=0.125), b + sixteenth / 4, gain=0.07, pan=-0.3)
+            track.add(pulse(note(tone), track.beat / 4, duty=0.125), start + sixteenth / 4, gain=0.07, pan=-0.3)
         root = note(roots[bar % 4])
         for eighth in range(8):
-            track.add(triangle(root * (2 if eighth % 2 else 1), step * 0.9), b + eighth / 2, gain=0.3)
+            track.add(triangle(root * (2 if eighth % 2 else 1), step * 0.9), start + eighth / 2, gain=0.15)
         for eighth, name in enumerate(tune[bar]):
             if name is None:
                 continue
             length = 1
             while eighth + length < 8 and tune[bar][eighth + length] is None and length < 2:
                 length += 1
-            track.add(pulse(note(name), step * length * 0.92), b + eighth / 2, gain=0.16, pan=0.2)
+            track.add(pulse(note(name), step * length * 0.92), start + eighth / 2, gain=0.16, pan=0.2)
         for beat in range(4):
             if beat in (0, 2):
-                track.add(kick(), b + beat, gain=0.45)
+                track.add(kick(), start + beat, gain=0.26)
             else:
-                track.add(noise(0.14, 22, tilt=False), b + beat, gain=0.12)
+                track.add(noise(0.14, 22, tilt=False), start + beat, gain=0.12)
         for sixteenth in range(0, 16, 2):
-            track.add(noise(0.03, 120), b + sixteenth / 4, gain=0.04 if sixteenth % 4 else 0.06, pan=0.3)
-    return track.finish(room=0.8, mix=0.12)
+            track.add(noise(0.03, 120), start + sixteenth / 4, gain=0.04 if sixteenth % 4 else 0.06, pan=0.3)
+    return track.finish(room=0.8, mix=0.12, highpass=100)
+
+
+def score_gain():
+    """Points won: a quick rising arpeggio of bells, landing on a held high note with a sparkle."""
+    track = Track(bpm=120, beats=7)  # long enough to ring out, so nothing wraps round to the start
+    for index, name in enumerate(["C5", "E5", "G5"]):
+        track.add(bell(note(name), 1.2), index * 0.16, gain=0.32, pan=-0.2 + 0.2 * index)
+    track.add(bell(note("C6"), 2.0), 0.5, gain=0.42, pan=0.1)
+    track.add(bell(note("G6"), 1.4), 0.5, gain=0.12, pan=0.3)
+    return track.finish(room=0.9, mix=0.18)
+
+
+def score_loss():
+    """Points lost: a short "wah wah" on a muted trombone, the last note sagging."""
+    track = Track(bpm=120, beats=7)
+    for index, (name, length, droop) in enumerate([("D4", 0.42, 0.0), ("C#4", 0.42, 0.0), ("C4", 1.1, 0.06)]):
+        track.add(brass(note(name), length * track.beat * 2, droop), index * 0.84, gain=0.4)
+    return track.finish(room=0.8, mix=0.12, highpass=90)
 
 
 STYLES = {"guitar": guitar, "musicbox": musicbox, "jazz": jazz, "chiptune": chiptune}
+# The ledger's one-shot sounds (ScoreSounds), always written with the app's tracks.
+SOUNDS = {"score-gain": score_gain, "score-loss": score_loss}
 
 
 def write(audio, out):
@@ -345,3 +388,5 @@ if __name__ == "__main__":
     else:
         for name, style in APP_TRACKS.items():
             write(STYLES[style](), RESOURCES / f"{name}.caf")
+        for name, build in SOUNDS.items():
+            write(build(), RESOURCES / f"{name}.caf")

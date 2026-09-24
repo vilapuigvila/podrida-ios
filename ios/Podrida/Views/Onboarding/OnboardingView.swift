@@ -211,10 +211,10 @@ private struct RuledPaper: View {
     var body: some View {
         Canvas { context, size in
             let spacing: CGFloat = 30
-            var y = spacing
-            while y < size.height {
-                context.fill(Path(CGRect(x: 0, y: y, width: size.width, height: 1)), with: .color(Palette.line.opacity(0.45)))
-                y += spacing
+            var lineTop = spacing
+            while lineTop < size.height {
+                context.fill(Path(CGRect(x: 0, y: lineTop, width: size.width, height: 1)), with: .color(Palette.line.opacity(0.45)))
+                lineTop += spacing
             }
             context.fill(Path(CGRect(x: 30, y: 0, width: 1.5, height: size.height)), with: .color(Palette.rule.opacity(0.22)))
         }

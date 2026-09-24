@@ -1,8 +1,7 @@
 import AVFoundation
 
-/// The onboarding's looping background music. Each page names a track, and moving to a page with a
-/// different one crossfades. It uses the ambient audio category, so the silent switch mutes it and it
-/// mixes with anything else already playing.
+/// The onboarding's looping music, crossfading when a page names a different track. Ambient audio,
+/// so the silent switch mutes it and it mixes with anything else playing.
 @MainActor
 final class OnboardingMusic {
     enum Track: String {

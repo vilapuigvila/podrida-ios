@@ -1,12 +1,12 @@
 import SwiftUI
 
-/// The score table: a column per player, a line per turn.
-///
-/// Only the cells scroll. The player names, the turn numbers and the totals row sit outside the scroll
-/// view and are shifted by its offset, so they stay pinned while following it along their own axis.
+/// The score table: a column per player, a line per turn. Only the cells scroll; names, turn numbers
+/// and totals sit outside the scroll view, shifted by its offset, so they stay pinned.
 struct LedgerGrid: View {
     @Binding var game: Game
     let activeTurn: Int
+    /// The rule the game breaks right now. While there is one, only the numbers it's about can be edited.
+    let brokenRule: BrokenRule?
     var focus: FocusState<LedgerField?>.Binding
 
     @State private var scroll = ScrollOffset()
@@ -40,7 +40,13 @@ struct LedgerGrid: View {
     /// A turn stays editable while it's the active one, and while the keyboard is still in it after it's
     /// complete, so a two-digit entry or a correction isn't cut off the moment the turn fills up.
     private func isEditable(_ turn: Int) -> Bool {
-        turn == activeTurn || turn == focus.wrappedValue?.turn
+        if let brokenRule { return turn == brokenRule.turn }
+        return turn == activeTurn || turn == focus.wrappedValue?.turn
+    }
+
+    private func lockedPart(_ turn: Int) -> LockedPart? {
+        guard let brokenRule, brokenRule.turn == turn else { return nil }
+        return brokenRule.isAboutCalls ? .calls : .results
     }
 
     private func isPending(_ turn: Int) -> Bool {
@@ -62,6 +68,7 @@ struct LedgerGrid: View {
                             player: player,
                             focus: focus
                         )
+                        .disabled(brokenRule != nil)
                         .frame(width: columnWidth)
                     }
                 }
@@ -110,6 +117,7 @@ struct LedgerGrid: View {
                                     player: player,
                                     playerName: game.playerNames[player],
                                     isEditable: isEditable(turn),
+                                    lockedTo: lockedPart(turn),
                                     focus: focus
                                 )
                                 .frame(width: columnWidth, height: Self.rowHeight)
@@ -130,8 +138,8 @@ struct LedgerGrid: View {
                     y: geometry.contentOffset.y + geometry.contentInsets.top
                 )
             } action: { _, offset in
-                scroll.x = offset.x
-                scroll.y = offset.y
+                scroll.horizontal = offset.x
+                scroll.vertical = offset.y
             }
             .onChange(of: focus.wrappedValue) { _, field in
                 guard let field, let turn = field.turn else { return }
@@ -186,8 +194,8 @@ private struct CellID: Hashable {
 @MainActor
 @Observable
 private final class ScrollOffset {
-    var x: CGFloat = 0
-    var y: CGFloat = 0
+    var horizontal: CGFloat = 0
+    var vertical: CGFloat = 0
 }
 
 /// Shifts its content to follow the body's scroll position along one axis.
@@ -198,8 +206,8 @@ private struct Synced<Content: View>: View {
 
     var body: some View {
         content.offset(
-            x: axis == .horizontal ? -offset.x : 0,
-            y: axis == .vertical ? -offset.y : 0
+            x: axis == .horizontal ? -offset.horizontal : 0,
+            y: axis == .vertical ? -offset.vertical : 0
         )
     }
 }

@@ -56,6 +56,18 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.pskmoons.podrida.tests
         GENERATE_INFOPLIST_FILE: YES
+  PodridaUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: PodridaUITests
+    dependencies:
+      - target: Podrida
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.pskmoons.podrida.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: Podrida
 schemes:
   Podrida:
     build:
@@ -67,3 +79,4 @@ schemes:
       config: Debug
       targets:
         - PodridaTests
+        - PodridaUITests

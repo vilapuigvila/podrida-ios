@@ -673,12 +673,37 @@
     return sum === (t + 1);
   }
 
+  // Turn n deals n hands, so no one can call more than n: the first player who did, or -1.
+  function findCallOverTurn(turn) {
+    for (var player = 0; player < state.numPlayers; player++) {
+      var value = state.hands[turn][player];
+      if (value !== null && value !== undefined && Number(value) > turn + 1) return player;
+    }
+    return -1;
+  }
+
+  // Turn n deals n hands, so the hands won can't add up to more than n, and once all are in, to exactly n.
+  function checkWonSumViolation(turn) {
+    var total = 0;
+    var allIn = true;
+    for (var player = 0; player < state.numPlayers; player++) {
+      var value = state.won[turn][player];
+      if (value === null || value === undefined) allIn = false;
+      else total += Number(value);
+    }
+    if (total > turn + 1) return { tooMany: true, total: total };
+    if (allIn && total < turn + 1) return { tooMany: false, total: total };
+    return null;
+  }
+
   function isTurnComplete(t) {
     for (var p = 0; p < state.numPlayers; p++) {
       if (state.hands[t][p] === null || state.hands[t][p] === undefined) return false;
       if (state.won[t][p] === null || state.won[t][p] === undefined) return false;
     }
+    if (findCallOverTurn(t) >= 0) return false;
     if (checkHandsSumViolation(t)) return false;
+    if (checkWonSumViolation(t)) return false;
     return true;
   }
 
@@ -686,8 +711,19 @@
     var warningEl = document.getElementById('handsWarning');
     if (!warningEl) return;
     var activeIndex = getActiveTurnIndex();
-    if (activeIndex < state.numTurns && checkHandsSumViolation(activeIndex)) {
+    var wonViolation = activeIndex < state.numTurns ? checkWonSumViolation(activeIndex) : null;
+    var overCaller = activeIndex < state.numTurns ? findCallOverTurn(activeIndex) : -1;
+    if (overCaller >= 0) {
+      warningEl.textContent = 'Turn ' + (activeIndex + 1) + ' deals ' + (activeIndex + 1) + (activeIndex === 0 ? ' hand' : ' hands') +
+        ', so no one can call more than ' + (activeIndex + 1) + ' \u2014 change ' + state.playerNames[overCaller] + '\u2019s call.';
+      warningEl.classList.add('visible');
+    } else if (activeIndex < state.numTurns && checkHandsSumViolation(activeIndex)) {
       warningEl.textContent = 'Total hands called can\u2019t equal ' + (activeIndex + 1) + ' this turn \u2014 change one player\u2019s number.';
+      warningEl.classList.add('visible');
+    } else if (wonViolation) {
+      warningEl.textContent = 'Turn ' + (activeIndex + 1) + ' deals ' + (activeIndex + 1) + (activeIndex === 0 ? ' hand' : ' hands') +
+        ', but the hands won ' + (wonViolation.tooMany ? 'add up to ' : 'only add up to ') + wonViolation.total +
+        ' \u2014 fix one player\u2019s hands won.';
       warningEl.classList.add('visible');
     } else {
       warningEl.classList.remove('visible');
@@ -884,6 +920,7 @@
         updateTotalsRow();
         var justCompleted = isTurnComplete(tt);
         updateRowLocks();
+        updateHandsWarning();
         if (justCompleted) focusFirstInputOfRow(tt + 1);
         persist();
       });

@@ -37,6 +37,27 @@ struct ScoringTests {
         #expect(game.leaders == [0, 1])
     }
 
+    @Test func newlyScoredPointsFollowTheCellJustFilledIn() {
+        var game = Game(playerNames: ["Ada", "Bo"], turnCount: 2)
+        game.hands[0] = [1, 0]
+        var next = game
+        next.won[0][0] = 1
+        #expect(next.newlyScoredPoints(since: game) == 8)
+
+        game = next
+        next.won[0][1] = 2
+        #expect(next.newlyScoredPoints(since: game) == -11)
+
+        game = next
+        next.playerNames[0] = "Adele"
+        #expect(next.newlyScoredPoints(since: game) == nil)
+        next.resetScores()
+        #expect(next.newlyScoredPoints(since: game) == nil)
+        var grown = game
+        grown.addPlayer()
+        #expect(grown.newlyScoredPoints(since: game) == nil)
+    }
+
     @Test func noLeaderBeforeAnyScore() {
         #expect(Game(playerNames: ["Ada", "Bo"], turnCount: 2).leaders.isEmpty)
     }
@@ -50,7 +71,7 @@ struct TurnFlowTests {
         #expect(game.callsBreakRule(turn: 0))
         #expect(game.activeTurn == 0)
 
-        game.hands[0][2] = 2
+        game.hands[0][2] = 1
         #expect(!game.callsBreakRule(turn: 0))
         #expect(game.activeTurn == 1)
     }
@@ -61,17 +82,81 @@ struct TurnFlowTests {
         #expect(!game.callsBreakRule(turn: 0))
     }
 
+    @Test func brokenRuleIsInTheActiveTurnWhileItsCallsMatchTheTurn() {
+        var game = Game(playerNames: ["Ada", "Bo"], turnCount: 3)
+        game.hands[0] = [0, 0]
+        game.won[0] = [1, 0]
+        #expect(game.brokenRule == nil)
+
+        game.hands[1] = [1, 1]
+        #expect(game.brokenRule == BrokenRule(turn: 1, kind: .callsMatchTurn))
+
+        game.hands[1][1] = nil
+        #expect(game.brokenRule == nil)
+        game.hands[1][1] = 0
+        #expect(game.brokenRule == nil)
+    }
+
+    /// Turn 1 deals one hand, so a call of 2 is wrong the moment it's made, before anyone else calls.
+    @Test func callOverTheTurnShowsAtOnce() {
+        var game = Game(playerNames: ["Ada", "Bo"], turnCount: 2)
+        game.hands[0] = [2, nil]
+        #expect(game.brokenRule == BrokenRule(turn: 0, kind: .callOverTurn(player: 0)))
+        #expect(game.brokenRule?.isAboutCalls == true)
+
+        game.hands[0][0] = 1
+        #expect(game.brokenRule == nil)
+        game.hands[1] = [0, 3]
+        game.won[0] = [1, 0]
+        game.hands[0][1] = 1
+        #expect(game.brokenRule == BrokenRule(turn: 1, kind: .callOverTurn(player: 1)))
+    }
+
+    /// Turn 1 deals one hand: two players can't both win it.
+    @Test func tooManyHandsWonShowsAsSoonAsItHappens() {
+        var game = Game(playerNames: ["Ada", "Bo", "Cy"], turnCount: 2)
+        game.hands[0] = [1, 1, 1]
+        game.won[0] = [1, nil, nil]
+        #expect(game.brokenRule == nil)
+
+        game.won[0][1] = 1
+        #expect(game.brokenRule == BrokenRule(turn: 0, kind: .tooManyWon(2)))
+        #expect(game.activeTurn == 0)
+
+        game.won[0][1] = 0
+        game.won[0][2] = 0
+        #expect(game.brokenRule == nil)
+        #expect(game.activeTurn == 1)
+    }
+
+    @Test func tooFewHandsWonShowsOnceEveryResultIsIn() {
+        var game = Game(playerNames: ["Ada", "Bo"], turnCount: 2)
+        game.hands[0] = [1, 1]
+        game.won[0] = [1, 0]
+        game.hands[1] = [0, 1]
+        game.won[1] = [0, nil]
+        #expect(game.brokenRule == nil)
+
+        game.won[1][1] = 1
+        #expect(game.brokenRule == BrokenRule(turn: 1, kind: .tooFewWon(1)))
+        #expect(!game.isComplete(turn: 1))
+
+        game.won[1][0] = 1
+        #expect(game.brokenRule == nil)
+        #expect(game.isComplete(turn: 1))
+    }
+
     @Test func activeTurnIsPastTheEndWhenAllTurnsAreDone() {
         var game = Game(playerNames: ["Ada"], turnCount: 1)
         game.hands[0] = [0]
-        game.won[0] = [0]
+        game.won[0] = [1]
         #expect(game.activeTurn == 1)
     }
 
     @Test func addingAPlayerReopensFinishedTurns() {
         var game = Game(playerNames: ["Ada", "Bo"], turnCount: 2)
         game.hands[0] = [0, 0]
-        game.won[0] = [0, 0]
+        game.won[0] = [1, 0]
         #expect(game.activeTurn == 1)
 
         game.addPlayer()
@@ -115,7 +200,7 @@ struct KeyboardOrderTests {
     @Test func nextLeavesATurnOnlyWhenItIsComplete() {
         var game = Game(playerNames: ["Ada", "Bo"], turnCount: 2)
         game.hands[0] = [0, nil]
-        game.won[0] = [0, 0]
+        game.won[0] = [1, 0]
         #expect(LedgerField.won(turn: 0, player: 1).next(in: game) == .hands(turn: 0, player: 1))
 
         game.hands[0][1] = 0

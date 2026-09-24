@@ -28,9 +28,8 @@ struct RootView: View {
         .preferredColorScheme(.light)
     }
 
-    /// The ledger's binding to the game. SwiftUI can still read it (and a field can still write to it)
-    /// for a moment after New Game clears the game, so a read falls back to the last game shown, and a
-    /// late write is dropped rather than bringing the old game back.
+    /// SwiftUI can still read and write this briefly after New Game clears the game, so a read falls
+    /// back to the last game shown, and a late write is dropped instead of bringing it back.
     private func binding(fallback: Game) -> Binding<Game> {
         Binding {
             store.game ?? fallback

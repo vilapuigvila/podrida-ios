@@ -50,6 +50,17 @@
                ReferencedContainer = "container:Podrida.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6F5C2223512E75EE187B8CA9"
+               BuildableName = "PodridaUITests.xctest"
+               BlueprintName = "PodridaUITests"
+               ReferencedContainer = "container:Podrida.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <CommandLineArguments>
       </CommandLineArguments>

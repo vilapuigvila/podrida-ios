@@ -11,7 +11,7 @@ It exists as a single self-contained web page and as a native SwiftUI iOS app. T
 | Exact call | +5, plus 3 per hand won |
 | Miss | −5, minus 3 per hand off |
 
-In each turn, the hands called by all players can't add up to the turn number. The ledger warns you and won't move to the next turn until someone changes their call. Turns unlock one at a time, and the leader's total gets a "high score" stamp.
+Turn 3 deals 3 hands, so in each turn no one can call more than the turn number, the calls can't add up to it, and the hands won must. The ledger warns you and won't move to the next turn until the numbers are fixed. Turns unlock one at a time, and the leader's total gets a "high score" stamp.
 
 ## Layout
 
@@ -25,6 +25,7 @@ ios/                 Native SwiftUI app
   Podrida/Resources/ Onboarding animations (Lottie JSON) and music
   tools/             Scripts that generate the onboarding animations and music
   PodridaTests/      Unit tests for the rules and saving
+  PodridaUITests/    UI test for the calling-rule alert
   AppStore/          Listing text, screenshots and the submission checklist
 ```
 
@@ -61,6 +62,8 @@ The app matches the web version's rules and ledger design. A few things differ, 
 
 - **Keyboard.** Score fields use the number pad, with ↑ ↓ and Done buttons above it. Within a turn, ↓ goes through everyone's call first and then everyone's result, the order they happen at the table. From the last result of a complete turn, ↓ moves on to the next turn.
 - **Corrections.** Tapping a filled-in number selects it, so typing replaces it. A finished turn stays editable until you leave it, so a two-digit number or a quick fix isn't cut off the moment the turn fills up. After that it locks, as in the web version.
+- **The rules** are enforced, not just flagged. When a call is over the turn number, the calls add up to it, or the hands won don't, a system alert says so, and until the numbers are fixed, only the ones in question can be edited.
+- **Sounds.** A short chime when a player's call earns points, a sad trombone when it costs them. The silent switch mutes them.
 - **Confirmations** for New Game and Reset Scores use the standard iOS alert.
 - **Fonts.** The app uses built-in faces, American Typewriter and SF Mono, in place of the web version's Google Fonts, so it looks the same offline.
 - **Saving.** A game in progress is saved on every change and survives the app being closed. A game saved by the earlier web-view version of the app carries over on first launch.

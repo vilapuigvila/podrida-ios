@@ -9,13 +9,16 @@ struct TurnCell: View {
     let player: Int
     let playerName: String
     let isEditable: Bool
+    /// While this turn breaks a rule, only the numbers it's about can be edited (the calls or the
+    /// results), and the rest is dimmed.
+    var lockedTo: LockedPart?
     var focus: FocusState<LedgerField?>.Binding
 
     var body: some View {
         VStack(spacing: 0) {
-            entry("Hands", value: $called, field: .hands(turn: turn, player: player), spoken: "hands called")
+            entry("Hands", value: $called, field: .hands(turn: turn, player: player), spoken: "hands called", part: .calls)
             divider
-            entry("Won", value: $won, field: .won(turn: turn, player: player), spoken: "hands won")
+            entry("Won", value: $won, field: .won(turn: turn, player: player), spoken: "hands won", part: .results)
             divider
             VStack(spacing: 1) {
                 caption("Score")
@@ -27,6 +30,7 @@ struct TurnCell: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("\(playerName), score after turn \(turn + 1)")
             .accessibilityValue(total.map { String($0) } ?? "Not scored yet")
+            .opacity(lockedTo != nil ? 0.35 : 1)
         }
         .padding(.horizontal, 4)
         .padding(.vertical, 6)
@@ -43,11 +47,12 @@ struct TurnCell: View {
         Text(text).fieldCaption(size: 8, tracking: 0.4)
     }
 
-    private func entry(_ title: String, value: Binding<Int?>, field: LedgerField, spoken: String) -> some View {
-        VStack(spacing: 1) {
+    private func entry(_ title: String, value: Binding<Int?>, field: LedgerField, spoken: String, part: LockedPart) -> some View {
+        let editable = isEditable && (lockedTo == nil || lockedTo == part)
+        return VStack(spacing: 1) {
             caption(title)
             // Only the turn being played gets text fields; every other line is plain text.
-            if isEditable {
+            if editable {
                 NumberField(value: value, isFocused: focus.wrappedValue == field)
                     .focused(focus, equals: field)
                     .accessibilityLabel("\(playerName), turn \(turn + 1), \(spoken)")
@@ -61,7 +66,15 @@ struct TurnCell: View {
                     .accessibilityValue(value.wrappedValue.map { String($0) } ?? "Empty")
             }
         }
+        .background(lockedTo == part ? Palette.rule.opacity(0.1) : .clear, in: .rect(cornerRadius: 3))
+        .opacity(lockedTo != nil && lockedTo != part ? 0.35 : 1)
     }
+}
+
+/// The half of a turn cell a broken rule is about.
+enum LockedPart {
+    case calls
+    case results
 }
 
 /// Digits-only entry for a count of hands; empty means not entered yet.

@@ -18,9 +18,8 @@ enum LedgerField: Hashable {
         }
     }
 
-    /// The field the keyboard's Next button moves to. Within a turn everyone's call comes first, then
-    /// everyone's result, the order they happen at the table. After the last result, Next goes on to
-    /// the following turn if this one is complete, or back to anything still missing in this one.
+    /// Where Next moves: everyone's call, then everyone's result, as at the table. After the last
+    /// result it goes to the next turn if this one is complete, or back to what's still missing.
     func next(in game: Game) -> LedgerField? {
         let last = game.playerCount - 1
         switch self {
