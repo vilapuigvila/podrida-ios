@@ -7,21 +7,46 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		433D2DEA69BCFDDC5B27B74D /* podrida-score.html in Resources */ = {isa = PBXBuildFile; fileRef = 7C74AD17BC1132A4216C81AE /* podrida-score.html */; };
+		32BB3D439ECF2F80EBF354DC /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303A8CA62955B46CB9C2138E /* RootView.swift */; };
+		3D14F64FD2654E4BDA1E5880 /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF25E69FD9CCC0651588DED3 /* GameStore.swift */; };
 		48D356E4A73F360522BFAF88 /* PodridaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABB85FD4734332E002DBFB8 /* PodridaApp.swift */; };
-		B9052DEFB0D0798CD311E1B4 /* ScoreWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3220E183F11F826CABDC99DF /* ScoreWebView.swift */; };
+		5D240E4F838E458CB22C66C9 /* LedgerGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5DD8C549A8D8C800C5A31C /* LedgerGrid.swift */; };
+		8CD9EA7D12226AA386A77306 /* TurnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7110EAF96E1E758429E524 /* TurnCell.swift */; };
+		A50A113A0D5865F1E58600C0 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A607214943B355C12FCE9D0 /* Game.swift */; };
+		AE640140E4B18760C3A99A7B /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDEF90385A6B4A1536439439 /* SetupView.swift */; };
 		C1161F58BEFBC3B9D7635E16 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 72CA7B1EAFD890FDD4AB7790 /* Assets.xcassets */; };
-		E5BB1CE01E343882E7D748A8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD016AACCD4B620E9648C5B2 /* ContentView.swift */; };
+		C2C87B90AF952CFA03F1A8FE /* LedgerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3634AADF1B7CC44A6EA834E /* LedgerField.swift */; };
+		C9EA2C0EAE9988D90AD91D19 /* GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16420C2F66411BF8E68B68D /* GameTests.swift */; };
+		CF8EC663EB93128F2D2B2B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A479C4522923A8BD617DA7E /* Theme.swift */; };
+		E873CD2537A2BB09A27EF3C6 /* LedgerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE1FCCFAC31585FA319FE3B /* LedgerView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E071B98F9B5A96AA2F92C8F8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2ABB0140C961E0B3739F49B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F1E53C198F7E04962A277BCC;
+			remoteInfo = Podrida;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0AB3FFC6D1F6698E1AC0FB51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0ABB85FD4734332E002DBFB8 /* PodridaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodridaApp.swift; sourceTree = "<group>"; };
-		3220E183F11F826CABDC99DF /* ScoreWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreWebView.swift; sourceTree = "<group>"; };
+		1A607214943B355C12FCE9D0 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		2E5DD8C549A8D8C800C5A31C /* LedgerGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerGrid.swift; sourceTree = "<group>"; };
+		303A8CA62955B46CB9C2138E /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		63CCF34401E1B489728D228F /* PodridaTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PodridaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72CA7B1EAFD890FDD4AB7790 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		7C74AD17BC1132A4216C81AE /* podrida-score.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "podrida-score.html"; sourceTree = "<group>"; };
+		9A479C4522923A8BD617DA7E /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		A3634AADF1B7CC44A6EA834E /* LedgerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerField.swift; sourceTree = "<group>"; };
+		AF25E69FD9CCC0651588DED3 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
+		C16420C2F66411BF8E68B68D /* GameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTests.swift; sourceTree = "<group>"; };
 		CE5FC6CCA551D1C801C192F4 /* Podrida.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Podrida.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FD016AACCD4B620E9648C5B2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		EB7110EAF96E1E758429E524 /* TurnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnCell.swift; sourceTree = "<group>"; };
+		FDE1FCCFAC31585FA319FE3B /* LedgerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerView.swift; sourceTree = "<group>"; };
+		FDEF90385A6B4A1536439439 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -29,36 +54,59 @@
 			isa = PBXGroup;
 			children = (
 				CE5FC6CCA551D1C801C192F4 /* Podrida.app */,
+				63CCF34401E1B489728D228F /* PodridaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8C9135B9327051EBDE9A06F5 /* podrida */ = {
+		3A03BB06511C224A875E2E80 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				7C74AD17BC1132A4216C81AE /* podrida-score.html */,
+				1A607214943B355C12FCE9D0 /* Game.swift */,
+				AF25E69FD9CCC0651588DED3 /* GameStore.swift */,
+				A3634AADF1B7CC44A6EA834E /* LedgerField.swift */,
 			);
-			name = podrida;
-			path = ..;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		A9787D8396D6790420EADBAF /* Podrida */ = {
 			isa = PBXGroup;
 			children = (
 				72CA7B1EAFD890FDD4AB7790 /* Assets.xcassets */,
-				FD016AACCD4B620E9648C5B2 /* ContentView.swift */,
 				0AB3FFC6D1F6698E1AC0FB51 /* Info.plist */,
 				0ABB85FD4734332E002DBFB8 /* PodridaApp.swift */,
-				3220E183F11F826CABDC99DF /* ScoreWebView.swift */,
+				3A03BB06511C224A875E2E80 /* Model */,
+				BEDABB3111D5F1EA8A8FFA45 /* Views */,
 			);
 			path = Podrida;
+			sourceTree = "<group>";
+		};
+		BE7AFDB86EAC9E02DC4EA0FD /* PodridaTests */ = {
+			isa = PBXGroup;
+			children = (
+				C16420C2F66411BF8E68B68D /* GameTests.swift */,
+			);
+			path = PodridaTests;
+			sourceTree = "<group>";
+		};
+		BEDABB3111D5F1EA8A8FFA45 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2E5DD8C549A8D8C800C5A31C /* LedgerGrid.swift */,
+				FDE1FCCFAC31585FA319FE3B /* LedgerView.swift */,
+				303A8CA62955B46CB9C2138E /* RootView.swift */,
+				FDEF90385A6B4A1536439439 /* SetupView.swift */,
+				9A479C4522923A8BD617DA7E /* Theme.swift */,
+				EB7110EAF96E1E758429E524 /* TurnCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		F4FEA43EF512A7F938B1F404 = {
 			isa = PBXGroup;
 			children = (
 				A9787D8396D6790420EADBAF /* Podrida */,
-				8C9135B9327051EBDE9A06F5 /* podrida */,
+				BE7AFDB86EAC9E02DC4EA0FD /* PodridaTests */,
 				324637F7F20176B4CECDFA73 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,6 +114,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		EBB742341E88BAEE016AD527 /* PodridaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BEFF8F03A66913500DE84E27 /* Build configuration list for PBXNativeTarget "PodridaTests" */;
+			buildPhases = (
+				E1C49F618D607065DDDD5052 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3824EC6F65A3BA62B01DF388 /* PBXTargetDependency */,
+			);
+			name = PodridaTests;
+			packageProductDependencies = (
+			);
+			productName = PodridaTests;
+			productReference = 63CCF34401E1B489728D228F /* PodridaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F1E53C198F7E04962A277BCC /* Podrida */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 363550350DCE511ABF0DAFE5 /* Build configuration list for PBXNativeTarget "Podrida" */;
@@ -113,6 +179,7 @@
 			projectRoot = "";
 			targets = (
 				F1E53C198F7E04962A277BCC /* Podrida */,
+				EBB742341E88BAEE016AD527 /* PodridaTests */,
 			);
 		};
 /* End PBXProject section */
@@ -123,7 +190,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1161F58BEFBC3B9D7635E16 /* Assets.xcassets in Resources */,
-				433D2DEA69BCFDDC5B27B74D /* podrida-score.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,15 +200,55 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5BB1CE01E343882E7D748A8 /* ContentView.swift in Sources */,
+				A50A113A0D5865F1E58600C0 /* Game.swift in Sources */,
+				3D14F64FD2654E4BDA1E5880 /* GameStore.swift in Sources */,
+				C2C87B90AF952CFA03F1A8FE /* LedgerField.swift in Sources */,
+				5D240E4F838E458CB22C66C9 /* LedgerGrid.swift in Sources */,
+				E873CD2537A2BB09A27EF3C6 /* LedgerView.swift in Sources */,
 				48D356E4A73F360522BFAF88 /* PodridaApp.swift in Sources */,
-				B9052DEFB0D0798CD311E1B4 /* ScoreWebView.swift in Sources */,
+				32BB3D439ECF2F80EBF354DC /* RootView.swift in Sources */,
+				AE640140E4B18760C3A99A7B /* SetupView.swift in Sources */,
+				CF8EC663EB93128F2D2B2B7B /* Theme.swift in Sources */,
+				8CD9EA7D12226AA386A77306 /* TurnCell.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1C49F618D607065DDDD5052 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9EA2C0EAE9988D90AD91D19 /* GameTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		3824EC6F65A3BA62B01DF388 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F1E53C198F7E04962A277BCC /* Podrida */;
+			targetProxy = E071B98F9B5A96AA2F92C8F8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		1D533B8198167C5ABA830E40 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.albertvila.podrida.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Podrida.app/Podrida";
+			};
+			name = Release;
+		};
 		205C873CDFC6FE7185FC32C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -195,7 +301,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -272,7 +378,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -302,6 +408,23 @@
 			};
 			name = Release;
 		};
+		AE4994240B4C1D08EB3D08D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.albertvila.podrida.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Podrida.app/Podrida";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -319,6 +442,15 @@
 			buildConfigurations = (
 				205C873CDFC6FE7185FC32C2 /* Debug */,
 				9CEA4B245BDBCED77768E137 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BEFF8F03A66913500DE84E27 /* Build configuration list for PBXNativeTarget "PodridaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE4994240B4C1D08EB3D08D7 /* Debug */,
+				1D533B8198167C5ABA830E40 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

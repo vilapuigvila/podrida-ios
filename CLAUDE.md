@@ -1,0 +1,55 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+Podrida Score: a scorekeeper for the Podrida card game, built twice with no shared code. `podrida-score.html` is the web version: one file, no dependencies. `ios/` is a native SwiftUI app. A rules change has to be made in both.
+
+## Commands
+
+```bash
+# Web: open the file directly, nothing to build
+open podrida-score.html
+
+# iOS: regenerate the Xcode project after editing ios/project.yml
+cd ios && xcodegen generate
+
+# iOS: build, run all tests, run one test
+xcodebuild -project ios/Podrida.xcodeproj -scheme Podrida \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
+xcodebuild test -project ios/Podrida.xcodeproj -scheme Podrida \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+xcodebuild test -project ios/Podrida.xcodeproj -scheme Podrida \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+  '-only-testing:PodridaTests/TurnFlowTests/addingAPlayerReopensFinishedTurns()'
+```
+
+The tests use Swift Testing, so a single test's `-only-testing` name needs the trailing `()`. Without it, the command matches nothing and still reports success.
+
+`ios/project.yml` (XcodeGen) is the source of truth for the Xcode project. Edit it rather than `project.pbxproj`, then regenerate. The generated project is committed so a fresh clone opens without XcodeGen. No signing team is set; a device build needs one picked in Xcode. The web version has no tests.
+
+## Game rules (both versions)
+
+- Each Score cell shows the player's running total through that turn, not that turn's points. An exact call scores 5 + 3 per hand won; a miss scores −5 − 3 per hand off.
+- The active turn is the first incomplete one, and later turns are locked. A turn is complete when every cell is filled and the hands called don't add up to the turn number. Adding a player adds empty cells to earlier turns, so they reopen.
+
+## Web app (`podrida-score.html`)
+
+It's a single IIFE with one mutable `state` object: `numPlayers`, `numTurns`, `playerNames[]`, `hands[turn][player]`, `won[turn][player]` and `started`. An empty cell is `null`.
+
+- `renderSetup()` and `renderLedger()` rebuild `#app` with `innerHTML` and re-bind every listener. Typing in a cell doesn't re-render; it patches the DOM through `refreshCellScoresFrom`, `updateTotalsRow`, `updateRowLocks` and `updateHandsWarning`.
+- The rules are in `computeCellScore`, `getActiveTurnIndex` and `checkHandsSumViolation`.
+- It saves through a host-provided async `window.storage.get/set/delete(key, shared)` under the key `scorekeeper:state`. In a plain browser that API is missing and saving silently does nothing.
+
+## iOS app (`ios/Podrida`)
+
+Swift 6 language mode (strict concurrency), iOS 18+. `onScrollGeometryChange` and `TextField(text:selection:)` require iOS 18.
+
+- **`Model/Game.swift`** is the whole rule set as a value type: scoring, running totals, leaders, turn completion, and add/reset. Views never compute rules themselves. `Game`'s coding keys (`playerNames`, `hands`, `won`) match the web state on purpose; see saving below.
+- **`Model/GameStore.swift`** holds `game: Game?` (`nil` shows setup) and saves it to `UserDefaults` in a `didSet`. On first launch it moves a game saved by the old web-view version of the app (key `webstorage.scorekeeper:state`, the web state JSON) into the native key.
+- **`RootView`** hands the ledger a hand-built `Binding<Game>`, not `Binding($store.game)`. After New Game sets the game to `nil`, SwiftUI still reads the old ledger's binding once, and the force-unwrapping binding crashes. The custom one falls back to the last game and drops late writes.
+- **`LedgerGrid`** pins the player names, the turn numbers and the totals row by keeping them outside the one two-axis `ScrollView` and offsetting them by its scroll position (`ScrollOffset`, read only by `Synced`). A pinned piece must use `.frame(minWidth: 0, …)` or `.frame(minHeight: 0, …)` before `.clipped()`. Without the zero minimum, the frame grows to its content's full size and pushes the totals off screen. Row height is a fixed constant shared by the turn column and the cells, so the two stay aligned.
+- **Editing:** only the active turn's row, plus a turn the keyboard is still in, gets `TextField`s; every other cell is plain `Text`. `LedgerField.next/previous` defines the keyboard order: all calls, then all results, then on to the next turn only if this one is complete.
+
+## Published artifact
+
+A private claude.ai artifact, https://claude.ai/code/artifact/8b82c550-d0af-4a1c-bd01-39dad39e2de7, runs an adapted copy of the web page that isn't in this repo. That copy saves to `localStorage` instead of `window.storage`, and it has no document skeleton because the artifact host adds one. Editing `podrida-score.html` doesn't update the artifact. In artifacts, load Google Fonts with a `<link>` tag: the host's URL rewriting breaks a CSS `@import`.
