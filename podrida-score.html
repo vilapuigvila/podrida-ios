@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light" />
+<title>Podrida Score</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ledger-bg: #EAF0E3;
+    --ledger-line: #C7D3BE;
+    --rule-red: #A63D33;
+    --ink: #202B21;
+    --ink-soft: #5B6B57;
+    --brass: #A9812E;
+    --desk: #161F1A;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    color: var(--ink);
+  }
+  button, input { font-family: inherit; }
+
+  /* ---------- Setup page ---------- */
+  .setup-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background: var(--desk);
+    padding: 56px 16px;
+  }
+  .ledger-card {
+    background: var(--ledger-bg);
+    width: 100%;
+    max-width: 420px;
+    border-radius: 4px;
+    box-shadow: 0 20px 44px rgba(0,0,0,0.5);
+    padding: 34px 26px 30px;
+  }
+  .kicker {
+    font-family: 'Special Elite', 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--rule-red);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .title {
+    font-family: 'Special Elite', 'Courier New', monospace;
+    font-size: 28px;
+    line-height: 1.2;
+    margin: 0 0 12px;
+  }
+  .sub {
+    color: var(--ink-soft);
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0 0 30px;
+  }
+  .field { margin-bottom: 22px; }
+  .field label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  #playerNamesList {
+    display: flex;
+    flex-direction: column;
+  }
+  .setup-name-input {
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid var(--ledger-line);
+    background: transparent;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    color: var(--ink);
+    padding: 10px 4px;
+    margin-bottom: 8px;
+  }
+  .setup-name-input::placeholder {
+    color: var(--ink-soft);
+    opacity: 0.65;
+  }
+  .setup-name-input:focus {
+    outline: none;
+    border-bottom-color: var(--rule-red);
+  }
+  .stepper {
+    display: flex;
+    align-items: stretch;
+    width: fit-content;
+    border: 1.5px solid var(--ink);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .step-btn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: transparent;
+    color: var(--ink);
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .step-btn:hover { background: rgba(32,43,33,0.08); }
+  .step-btn:active { background: rgba(32,43,33,0.16); }
+  .step-value {
+    min-width: 56px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 44px;
+    border-left: 1.5px solid var(--ink);
+    border-right: 1.5px solid var(--ink);
+  }
+  .primary-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--rule-red);
+    color: var(--ledger-bg);
+    border: none;
+    border-radius: 3px;
+    font-family: 'Special Elite', monospace;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .primary-btn:hover { filter: brightness(1.08); }
+  .primary-btn:active { filter: brightness(0.94); }
+
+  /* ---------- Ledger page ---------- */
+  .ledger-page {
+    min-height: 100vh;
+    background: var(--ledger-bg);
+  }
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 16px 14px 13px;
+    border-bottom: 2px solid var(--rule-red);
+  }
+  .top-title {
+    font-family: 'Special Elite', monospace;
+    font-size: 15px;
+  }
+  .top-meta {
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 3px;
+  }
+  .reset-btn {
+    background: transparent;
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    padding: 8px 12px;
+    border-radius: 3px;
+    font-size: 11px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .reset-btn:hover { background: rgba(32,43,33,0.06); }
+
+  .hands-warning {
+    display: none;
+    background: rgba(166,61,51,0.12);
+    border-bottom: 2px solid var(--rule-red);
+    color: var(--rule-red);
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 10px 14px;
+    text-align: center;
+  }
+  .hands-warning.visible {
+    display: block;
+  }
+
+  .table-scroll {
+    overflow: auto;
+    max-height: calc(100vh - 132px);
+    -webkit-overflow-scrolling: touch;
+  }
+  .ledger-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+  }
+  .ledger-table th, .ledger-table td {
+    border-bottom: 1px solid var(--ledger-line);
+  }
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    background: var(--ledger-bg);
+    font-weight: 500;
+  }
+  .corner-cell {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    background: var(--ledger-bg);
+    border-right: 2px solid var(--rule-red);
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    min-width: 48px;
+    padding: 10px 6px;
+  }
+  .player-th {
+    min-width: 112px;
+    padding: 8px 6px;
+  }
+  .player-name-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink);
+    text-align: center;
+    padding: 6px 2px;
+    border-bottom: 1.5px dashed var(--ledger-line);
+  }
+  .player-name-input:focus {
+    outline: none;
+    border-bottom-color: var(--rule-red);
+    background: rgba(166,61,51,0.06);
+  }
+  .turn-num {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: var(--ledger-bg);
+    border-right: 2px solid var(--rule-red);
+    text-align: center;
+    font-family: 'Special Elite', monospace;
+    color: var(--rule-red);
+    font-size: 13px;
+    padding: 10px 6px;
+  }
+  tbody tr:nth-child(even) td {
+    background: rgba(32,43,33,0.025);
+  }
+  .turn-cell {
+    padding: 6px 4px;
+    min-width: 84px;
+  }
+  .mini-field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .mini-field + .mini-field {
+    margin-top: 5px;
+    padding-top: 5px;
+    border-top: 1px dashed var(--ledger-line);
+  }
+  .mini-label {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    line-height: 1.3;
+    margin-bottom: 1px;
+  }
+  .hands-input, .won-input {
+    width: 100%;
+    min-width: 60px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: var(--ink);
+    text-align: center;
+    padding: 4px 2px;
+  }
+  .hands-input::placeholder, .won-input::placeholder { color: var(--ledger-line); }
+  .hands-input:focus, .won-input:focus {
+    outline: none;
+    background: rgba(166,61,51,0.10);
+    box-shadow: inset 0 -2px 0 var(--rule-red);
+  }
+  .score-value {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 4px 2px;
+    color: var(--ink);
+  }
+  .score-value.score-negative {
+    color: var(--rule-red);
+  }
+  .hands-input:disabled, .won-input:disabled {
+    color: var(--ink);
+    opacity: 1;
+    -webkit-text-fill-color: var(--ink);
+  }
+  tr.row-pending {
+    opacity: 0.4;
+  }
+  tr.row-pending .hands-input, tr.row-pending .won-input {
+    cursor: not-allowed;
+  }
+  tr.row-done .hands-input, tr.row-done .won-input {
+    cursor: default;
+  }
+  tfoot td {
+    position: sticky;
+    bottom: 0;
+    z-index: 3;
+    background: var(--ledger-bg);
+    border-top: 2px solid var(--ink);
+    border-bottom: none;
+    padding: 12px 6px;
+  }
+  .total-label {
+    left: 0;
+    z-index: 5;
+    border-right: 2px solid var(--rule-red);
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+  }
+  .total-cell {
+    text-align: center;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .total-value { display: block; }
+  .stamp {
+    display: none;
+    font-family: 'Special Elite', monospace;
+    font-size: 8px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--brass);
+    border: 1px solid var(--brass);
+    border-radius: 10px;
+    padding: 1px 6px;
+    margin-top: 4px;
+    transform: rotate(-3deg);
+  }
+  .total-cell.is-leader .stamp { display: inline-block; }
+  .total-cell.is-leader .total-value { color: var(--brass); }
+
+  .bottom-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px;
+  }
+  .add-btn {
+    background: transparent;
+    border: 1.5px dashed var(--ink-soft);
+    color: var(--ink-soft);
+    padding: 9px 13px;
+    border-radius: 3px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .add-btn:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  .reset-scores-btn {
+    background: transparent;
+    border: 1.5px dashed var(--rule-red);
+    color: var(--rule-red);
+    padding: 9px 13px;
+    border-radius: 3px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-left: auto;
+  }
+  .reset-scores-btn:hover {
+    background: rgba(166,61,51,0.08);
+  }
+
+  button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--rule-red);
+    outline-offset: 2px;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(22, 31, 26, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
+  }
+  .modal-card {
+    background: var(--ledger-bg);
+    width: 100%;
+    max-width: 340px;
+    border-radius: 4px;
+    padding: 24px 22px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  }
+  .modal-message {
+    margin: 0 0 20px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  .modal-btn {
+    padding: 10px 15px;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    border: 1.5px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+  }
+  .modal-btn-secondary:hover {
+    background: rgba(32,43,33,0.06);
+  }
+  .modal-btn-primary {
+    background: var(--rule-red);
+    border-color: var(--rule-red);
+    color: var(--ledger-bg);
+  }
+  .modal-btn-primary:hover {
+    filter: brightness(1.08);
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+(function () {
+  var APP = document.getElementById('app');
+  var STORAGE_KEY = 'scorekeeper:state';
+  var MAX_PLAYERS = 24;
+  var MAX_TURNS = 300;
+
+  var state = null;
+
+  function defaultState() {
+    return {
+      numPlayers: 4,
+      numTurns: 10,
+      playerNames: [],
+      hands: [],
+      won: [],
+      started: false
+    };
+  }
+
+  function hasStorage() {
+    return typeof window !== 'undefined' && !!window.storage;
+  }
+
+  async function loadSaved() {
+    if (!hasStorage()) return null;
+    try {
+      var result = await window.storage.get(STORAGE_KEY, false);
+      if (!result || !result.value) return null;
+      return JSON.parse(result.value);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function persist() {
+    if (!hasStorage()) return;
+    try {
+      await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+    } catch (e) {
+      console.error('Could not save game state', e);
+    }
+  }
+
+  async function clearSaved() {
+    if (!hasStorage()) return;
+    try {
+      await window.storage.delete(STORAGE_KEY, false);
+    } catch (e) {
+      // nothing to clear, ignore
+    }
+  }
+
+  function makeScoresGrid(turns, players) {
+    var grid = [];
+    for (var t = 0; t < turns; t++) {
+      grid.push(new Array(players).fill(null));
+    }
+    return grid;
+  }
+
+  function syncPlayerNamesToCount() {
+    while (state.playerNames.length < state.numPlayers) {
+      state.playerNames.push('');
+    }
+    while (state.playerNames.length > state.numPlayers) {
+      state.playerNames.pop();
+    }
+  }
+
+  function renderSetup() {
+    syncPlayerNamesToCount();
+
+    var nameInputsHtml = '';
+    for (var i = 0; i < state.numPlayers; i++) {
+      nameInputsHtml += '<input type="text" class="setup-name-input" data-index="' + i + '" placeholder="Player ' + (i + 1) + '" />';
+    }
+
+    APP.innerHTML =
+      '<div class="setup-page">' +
+        '<div class="ledger-card">' +
+          '<div class="kicker">New game</div>' +
+          '<h1 class="title">Podrida<br>Score</h1>' +
+          '<p class="sub">Every player gets a column. Every turn gets a line.</p>' +
+          '<div class="field">' +
+            '<label>Players</label>' +
+            '<div class="stepper" data-field="numPlayers">' +
+              '<button type="button" class="step-btn" data-delta="-1" aria-label="Fewer players">&minus;</button>' +
+              '<span class="step-value" id="playersValue"></span>' +
+              '<button type="button" class="step-btn" data-delta="1" aria-label="More players">+</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="field">' +
+            '<label>Player names</label>' +
+            '<div id="playerNamesList">' + nameInputsHtml + '</div>' +
+          '</div>' +
+          '<div class="field">' +
+            '<label>Turns</label>' +
+            '<div class="stepper" data-field="numTurns">' +
+              '<button type="button" class="step-btn" data-delta="-1" aria-label="Fewer turns">&minus;</button>' +
+              '<span class="step-value" id="turnsValue"></span>' +
+              '<button type="button" class="step-btn" data-delta="1" aria-label="More turns">+</button>' +
+            '</div>' +
+          '</div>' +
+          '<button type="button" class="primary-btn" id="openLedgerBtn">Open the Ledger &rarr;</button>' +
+        '</div>' +
+      '</div>';
+
+    document.getElementById('playersValue').textContent = state.numPlayers;
+    document.getElementById('turnsValue').textContent = state.numTurns;
+
+    document.querySelectorAll('.setup-name-input').forEach(function (input) {
+      var idx = parseInt(input.getAttribute('data-index'), 10);
+      input.value = state.playerNames[idx];
+      input.addEventListener('input', function (e) {
+        var i2 = parseInt(e.target.getAttribute('data-index'), 10);
+        state.playerNames[i2] = e.target.value;
+      });
+    });
+
+    document.querySelectorAll('.stepper').forEach(function (stepperEl) {
+      var field = stepperEl.getAttribute('data-field');
+      var max = field === 'numPlayers' ? MAX_PLAYERS : MAX_TURNS;
+      var display = document.getElementById(field === 'numPlayers' ? 'playersValue' : 'turnsValue');
+      stepperEl.querySelectorAll('.step-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var delta = parseInt(btn.getAttribute('data-delta'), 10);
+          state[field] = Math.min(max, Math.max(1, state[field] + delta));
+          if (field === 'numPlayers') {
+            renderSetup();
+          } else {
+            display.textContent = state[field];
+          }
+        });
+      });
+    });
+
+    document.getElementById('openLedgerBtn').addEventListener('click', function () {
+      for (var p = 0; p < state.numPlayers; p++) {
+        if (!state.playerNames[p] || !state.playerNames[p].trim()) {
+          state.playerNames[p] = 'Player ' + (p + 1);
+        }
+      }
+      state.hands = makeScoresGrid(state.numTurns, state.numPlayers);
+      state.won = makeScoresGrid(state.numTurns, state.numPlayers);
+      state.started = true;
+      persist();
+      renderLedger();
+    });
+  }
+
+  function computeCellScore(hands, won) {
+    if (hands === null || hands === undefined || won === null || won === undefined) return null;
+    if (isNaN(hands) || isNaN(won)) return null;
+    var diff = Math.abs(Number(hands) - Number(won));
+    if (diff === 0) {
+      return 5 + 3 * Number(won);
+    }
+    return -5 - 3 * diff;
+  }
+
+  function computeTotals() {
+    var totals = new Array(state.numPlayers).fill(0);
+    for (var t = 0; t < state.numTurns; t++) {
+      for (var p = 0; p < state.numPlayers; p++) {
+        var s = computeCellScore(state.hands[t][p], state.won[t][p]);
+        if (s !== null) {
+          totals[p] += s;
+        }
+      }
+    }
+    return totals;
+  }
+
+  function hasAnyScore() {
+    for (var t = 0; t < state.hands.length; t++) {
+      for (var p = 0; p < state.hands[t].length; p++) {
+        if (computeCellScore(state.hands[t][p], state.won[t][p]) !== null) return true;
+      }
+    }
+    return false;
+  }
+
+  function computeCumulativeScore(t, p) {
+    var own = computeCellScore(state.hands[t][p], state.won[t][p]);
+    if (own === null) return null;
+    var sum = 0;
+    for (var i = 0; i <= t; i++) {
+      var s = computeCellScore(state.hands[i][p], state.won[i][p]);
+      if (s !== null) sum += s;
+    }
+    return sum;
+  }
+
+  function refreshCellScore(t, p) {
+    var el = document.getElementById('score-' + t + '-' + p);
+    if (!el) return;
+    var s = computeCumulativeScore(t, p);
+    el.textContent = (s === null) ? '\u2013' : s;
+    el.classList.toggle('score-negative', s !== null && s < 0);
+  }
+
+  function refreshCellScoresFrom(t, p) {
+    for (var i = t; i < state.numTurns; i++) {
+      refreshCellScore(i, p);
+    }
+  }
+
+  function checkHandsSumViolation(t) {
+    for (var p = 0; p < state.numPlayers; p++) {
+      if (state.hands[t][p] === null || state.hands[t][p] === undefined) return false;
+    }
+    var sum = 0;
+    for (var p2 = 0; p2 < state.numPlayers; p2++) {
+      sum += Number(state.hands[t][p2]);
+    }
+    return sum === (t + 1);
+  }
+
+  function isTurnComplete(t) {
+    for (var p = 0; p < state.numPlayers; p++) {
+      if (state.hands[t][p] === null || state.hands[t][p] === undefined) return false;
+      if (state.won[t][p] === null || state.won[t][p] === undefined) return false;
+    }
+    if (checkHandsSumViolation(t)) return false;
+    return true;
+  }
+
+  function updateHandsWarning() {
+    var warningEl = document.getElementById('handsWarning');
+    if (!warningEl) return;
+    var activeIndex = getActiveTurnIndex();
+    if (activeIndex < state.numTurns && checkHandsSumViolation(activeIndex)) {
+      warningEl.textContent = 'Total hands called can\u2019t equal ' + (activeIndex + 1) + ' this turn \u2014 change one player\u2019s number.';
+      warningEl.classList.add('visible');
+    } else {
+      warningEl.classList.remove('visible');
+    }
+  }
+
+  function getActiveTurnIndex() {
+    for (var t = 0; t < state.numTurns; t++) {
+      if (!isTurnComplete(t)) return t;
+    }
+    return state.numTurns;
+  }
+
+  function updateRowLocks() {
+    var activeIndex = getActiveTurnIndex();
+    for (var t = 0; t < state.numTurns; t++) {
+      var rowEl = document.getElementById('turn-row-' + t);
+      if (!rowEl) continue;
+      var rowClass = t < activeIndex ? 'row-done' : (t === activeIndex ? 'row-active' : 'row-pending');
+      rowEl.className = rowClass;
+      var enable = (t === activeIndex);
+      var inputs = rowEl.querySelectorAll('.hands-input, .won-input');
+      inputs.forEach(function (inp) { inp.disabled = !enable; });
+    }
+  }
+
+  function focusFirstInputOfRow(t) {
+    if (t < 0 || t >= state.numTurns) return;
+    var rowEl = document.getElementById('turn-row-' + t);
+    if (!rowEl) return;
+    var firstInput = rowEl.querySelector('.hands-input');
+    if (firstInput) {
+      firstInput.focus();
+      if (firstInput.scrollIntoView) {
+        firstInput.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+    }
+  }
+
+  function showConfirmModal(message, confirmLabel, onConfirm) {
+    var overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML =
+      '<div class="modal-card" role="dialog" aria-modal="true">' +
+        '<p class="modal-message"></p>' +
+        '<div class="modal-actions">' +
+          '<button type="button" class="modal-btn modal-btn-secondary" id="modalCancelBtn">Cancel</button>' +
+          '<button type="button" class="modal-btn modal-btn-primary" id="modalConfirmBtn"></button>' +
+        '</div>' +
+      '</div>';
+    overlay.querySelector('.modal-message').textContent = message;
+    overlay.querySelector('#modalConfirmBtn').textContent = confirmLabel;
+    document.body.appendChild(overlay);
+
+    function onKeydown(e) {
+      if (e.key === 'Escape') close();
+    }
+    document.addEventListener('keydown', onKeydown);
+
+    function close() {
+      document.removeEventListener('keydown', onKeydown);
+      if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+    }
+
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) close();
+    });
+    overlay.querySelector('#modalCancelBtn').addEventListener('click', close);
+    overlay.querySelector('#modalConfirmBtn').addEventListener('click', function () {
+      close();
+      onConfirm();
+    });
+    overlay.querySelector('#modalCancelBtn').focus();
+  }
+
+  function updateTotalsRow() {
+    var totals = computeTotals();
+    var anyScore = hasAnyScore();
+    var max = Math.max.apply(null, totals);
+    for (var p = 0; p < state.numPlayers; p++) {
+      var cell = document.getElementById('total-' + p);
+      if (!cell) continue;
+      cell.querySelector('.total-value').textContent = totals[p];
+      var isLeader = anyScore && totals[p] === max;
+      cell.classList.toggle('is-leader', isLeader);
+    }
+  }
+
+  function renderLedger() {
+    var theadCells = '<th class="corner-cell">Turn</th>';
+    for (var p = 0; p < state.numPlayers; p++) {
+      theadCells += '<th class="player-th"><input type="text" class="player-name-input" data-player="' + p + '" /></th>';
+    }
+
+    var activeIndex = getActiveTurnIndex();
+
+    var bodyRows = '';
+    for (var t = 0; t < state.numTurns; t++) {
+      var rowClass = t < activeIndex ? 'row-done' : (t === activeIndex ? 'row-active' : 'row-pending');
+      var disabledAttr = (t === activeIndex) ? '' : ' disabled';
+      var rowCells = '<td class="turn-num">' + (t + 1) + '</td>';
+      for (var p2 = 0; p2 < state.numPlayers; p2++) {
+        rowCells +=
+          '<td class="turn-cell">' +
+            '<div class="mini-field">' +
+              '<span class="mini-label">Hands</span>' +
+              '<input type="number" inputmode="numeric" min="0" step="1" class="hands-input" data-turn="' + t + '" data-player="' + p2 + '" placeholder="\u2013"' + disabledAttr + ' />' +
+            '</div>' +
+            '<div class="mini-field">' +
+              '<span class="mini-label">Won</span>' +
+              '<input type="number" inputmode="numeric" min="0" step="1" class="won-input" data-turn="' + t + '" data-player="' + p2 + '" placeholder="\u2013"' + disabledAttr + ' />' +
+            '</div>' +
+            '<div class="mini-field">' +
+              '<span class="mini-label">Score</span>' +
+              '<span class="score-value" id="score-' + t + '-' + p2 + '">\u2013</span>' +
+            '</div>' +
+          '</td>';
+      }
+      bodyRows += '<tr id="turn-row-' + t + '" class="' + rowClass + '">' + rowCells + '</tr>';
+    }
+
+    var totalCells = '<td class="total-label">Total</td>';
+    for (var p3 = 0; p3 < state.numPlayers; p3++) {
+      totalCells += '<td class="total-cell" id="total-' + p3 + '"><span class="total-value">0</span><span class="stamp">high score</span></td>';
+    }
+
+    APP.innerHTML =
+      '<div class="ledger-page">' +
+        '<div class="top-bar">' +
+          '<div>' +
+            '<div class="top-title">Podrida Score</div>' +
+            '<div class="top-meta">' + state.numTurns + ' turns &middot; ' + state.numPlayers + ' players</div>' +
+            '<div class="top-meta">Exact call: +5, +3/hand &middot; Miss: &minus;5, &minus;3 per hand off</div>' +
+            '<div class="top-meta">Score is a running total, turn over turn</div>' +
+          '</div>' +
+          '<button type="button" class="reset-btn" id="newGameBtn">New Game</button>' +
+        '</div>' +
+        '<div class="hands-warning" id="handsWarning"></div>' +
+        '<div class="table-scroll">' +
+          '<table class="ledger-table">' +
+            '<thead><tr>' + theadCells + '</tr></thead>' +
+            '<tbody>' + bodyRows + '</tbody>' +
+            '<tfoot><tr>' + totalCells + '</tr></tfoot>' +
+          '</table>' +
+        '</div>' +
+        '<div class="bottom-controls">' +
+          '<button type="button" class="add-btn" id="addTurnBtn">+ Add turn</button>' +
+          '<button type="button" class="add-btn" id="addPlayerBtn">+ Add player</button>' +
+          '<button type="button" class="reset-scores-btn" id="resetScoresBtn">Reset Scores</button>' +
+        '</div>' +
+      '</div>';
+
+    document.querySelectorAll('.player-name-input').forEach(function (input) {
+      var p = parseInt(input.getAttribute('data-player'), 10);
+      input.value = state.playerNames[p];
+      input.addEventListener('input', function (e) {
+        var pp = parseInt(e.target.getAttribute('data-player'), 10);
+        state.playerNames[pp] = e.target.value;
+        persist();
+      });
+    });
+
+    document.querySelectorAll('.hands-input').forEach(function (input) {
+      var t = parseInt(input.getAttribute('data-turn'), 10);
+      var p = parseInt(input.getAttribute('data-player'), 10);
+      var val = state.hands[t][p];
+      input.value = (val === null || val === undefined) ? '' : val;
+      input.addEventListener('input', function (e) {
+        var tt = parseInt(e.target.getAttribute('data-turn'), 10);
+        var pp = parseInt(e.target.getAttribute('data-player'), 10);
+        var raw = e.target.value;
+        state.hands[tt][pp] = raw === '' ? null : Number(raw);
+        refreshCellScoresFrom(tt, pp);
+        updateTotalsRow();
+        var justCompleted = isTurnComplete(tt);
+        updateRowLocks();
+        updateHandsWarning();
+        if (justCompleted) focusFirstInputOfRow(tt + 1);
+        persist();
+      });
+    });
+
+    document.querySelectorAll('.won-input').forEach(function (input) {
+      var t = parseInt(input.getAttribute('data-turn'), 10);
+      var p = parseInt(input.getAttribute('data-player'), 10);
+      var val = state.won[t][p];
+      input.value = (val === null || val === undefined) ? '' : val;
+      input.addEventListener('input', function (e) {
+        var tt = parseInt(e.target.getAttribute('data-turn'), 10);
+        var pp = parseInt(e.target.getAttribute('data-player'), 10);
+        var raw = e.target.value;
+        state.won[tt][pp] = raw === '' ? null : Number(raw);
+        refreshCellScoresFrom(tt, pp);
+        updateTotalsRow();
+        var justCompleted = isTurnComplete(tt);
+        updateRowLocks();
+        if (justCompleted) focusFirstInputOfRow(tt + 1);
+        persist();
+      });
+    });
+
+    for (var pi = 0; pi < state.numPlayers; pi++) {
+      refreshCellScoresFrom(0, pi);
+    }
+    updateHandsWarning();
+
+    document.getElementById('newGameBtn').addEventListener('click', function () {
+      showConfirmModal('Start a new game? This clears the current ledger.', 'Start New Game', async function () {
+        state = defaultState();
+        await clearSaved();
+        renderSetup();
+      });
+    });
+
+    document.getElementById('addTurnBtn').addEventListener('click', function () {
+      if (state.numTurns >= MAX_TURNS) return;
+      state.numTurns += 1;
+      state.hands.push(new Array(state.numPlayers).fill(null));
+      state.won.push(new Array(state.numPlayers).fill(null));
+      persist();
+      renderLedger();
+    });
+
+    document.getElementById('addPlayerBtn').addEventListener('click', function () {
+      if (state.numPlayers >= MAX_PLAYERS) return;
+      state.numPlayers += 1;
+      state.playerNames.push('Player ' + state.numPlayers);
+      state.hands.forEach(function (row) { row.push(null); });
+      state.won.forEach(function (row) { row.push(null); });
+      persist();
+      renderLedger();
+    });
+
+    document.getElementById('resetScoresBtn').addEventListener('click', function () {
+      showConfirmModal('Clear all entered hands and scores? Players and turns stay the same.', 'Reset Scores', function () {
+        state.hands = makeScoresGrid(state.numTurns, state.numPlayers);
+        state.won = makeScoresGrid(state.numTurns, state.numPlayers);
+        persist();
+        renderLedger();
+      });
+    });
+
+    updateTotalsRow();
+  }
+
+  (async function init() {
+    var saved = await loadSaved();
+    state = saved || defaultState();
+    if (state.started && state.hands && state.hands.length === state.numTurns) {
+      if (!state.won || !Array.isArray(state.won) || state.won.length !== state.numTurns) {
+        state.won = makeScoresGrid(state.numTurns, state.numPlayers);
+      }
+      renderLedger();
+    } else {
+      state = defaultState();
+      renderSetup();
+    }
+  })();
+})();
+</script>
+</body>
+</html>
