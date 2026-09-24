@@ -38,7 +38,7 @@ ios/                 Native SwiftUI app
 open ios/Podrida.xcodeproj
 ```
 
-Choose a simulator and run. Xcode fetches the one package dependency, [Lottie](https://github.com/airbnb/lottie-spm), on first open. To run on a device, set your team under *Signing & Capabilities*. The bundle ID is `com.albertvila.podrida`.
+Choose a simulator and run. Xcode fetches the one package dependency, [Lottie](https://github.com/airbnb/lottie-spm), on first open. To run on a device, set your team under *Signing & Capabilities*. The bundle ID is `com.pskmoons.podrida`.
 
 Run the tests:
 

@@ -39,7 +39,7 @@ In [App Store Connect](https://appstoreconnect.apple.com) → Apps → **+** →
 | Platforms | iOS |
 | Name | Podrida Score (must be unique on the store; if taken, try "Podrida Scorekeeper") |
 | Primary language | English (U.S.) |
-| Bundle ID | `com.albertvila.podrida` (Xcode's automatic signing registers it on your first archive; if it's not in the list yet, archive once first) |
+| Bundle ID | `com.pskmoons.podrida` (register it under Certificates, Identifiers & Profiles → Identifiers first, or it won't be in the list) |
 | SKU | `podrida-score` |
 | User access | Full access |
 

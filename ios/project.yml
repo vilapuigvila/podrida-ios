@@ -1,6 +1,6 @@
 name: Podrida
 options:
-  bundleIdPrefix: com.albertvila
+  bundleIdPrefix: com.pskmoons
   deploymentTarget:
     iOS: "18.0"
   createIntermediateGroups: true
@@ -23,7 +23,7 @@ targets:
       - package: Lottie
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.albertvila.podrida
+        PRODUCT_BUNDLE_IDENTIFIER: com.pskmoons.podrida
         TARGETED_DEVICE_FAMILY: "1,2"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
@@ -54,7 +54,7 @@ targets:
       - target: Podrida
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.albertvila.podrida.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.pskmoons.podrida.tests
         GENERATE_INFOPLIST_FILE: YES
 schemes:
   Podrida:

@@ -6,7 +6,7 @@ set -e
 HERE=${0:A:h}
 IOS=${HERE:h:h}
 WORK=$IOS/build/screenshots
-BID=com.albertvila.podrida
+BID=com.pskmoons.podrida
 PHONE_NAME="iPhone 17 Pro Max"
 IPAD_NAME="iPad Pro 13 (App Store)"
 IPAD_TYPE=com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M5-12GB
