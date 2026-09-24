@@ -1,6 +1,6 @@
 # Publishing Podrida Score on the App Store
 
-Everything App Store Connect asks for is in this folder, apart from the parts only you can do: support and privacy URLs, your account, and the upload itself.
+Everything App Store Connect asks for is in this folder, apart from the parts only you can do in App Store Connect.
 
 ```
 metadata/                  Listing text (fastlane `deliver` layout)
@@ -10,8 +10,8 @@ metadata/                  Listing text (fastlane `deliver` layout)
   en-US/description.txt      Description
   en-US/keywords.txt         Keywords (100 max, comma-separated)
   en-US/release_notes.txt    What's New (App Store Connect doesn't ask for it on 1.0; kept for 1.1)
-  en-US/support_url.txt      ← fill in
-  en-US/privacy_url.txt      ← fill in
+  en-US/support_url.txt      Support page URL
+  en-US/privacy_url.txt      Privacy policy URL
   copyright.txt, primary_category.txt, secondary_category.txt
 screenshots/
   iphone-6.9/                1320 × 2868, iPhone 6.9" (App Store Connect scales these down for smaller iPhones)
@@ -23,12 +23,14 @@ tools/                     Regenerates the screenshots (see the end of this file
 
 The app icon (light, dark and tinted) is already in `Podrida/Assets.xcassets`. The privacy manifest, `Podrida/PrivacyInfo.xcprivacy`, declares that the app collects no data and gives Apple's approved reason (CA92.1) for its UserDefaults use.
 
-## Before you start: two URLs
+## Support and privacy pages
 
-App Store Connect won't let you submit without both:
+Both URLs point at the public repo [vilapuigvila/podrida-score](https://github.com/vilapuigvila/podrida-score), served by GitHub Pages. This repo is private, so it can't host them.
 
-1. **Privacy policy URL:** publish `privacy-policy.md` anywhere public, then put the link in `metadata/en-US/privacy_url.txt`. Add your contact email to the policy first. The GitHub repo is private, so a file in it won't do.
-2. **Support URL:** a page or `mailto:`-style contact page where people can reach you. Put it in `metadata/en-US/support_url.txt`.
+- Support: https://vilapuigvila.github.io/podrida-score/
+- Privacy policy: https://vilapuigvila.github.io/podrida-score/privacy/
+
+`privacy-policy.md` is the same policy text. If you change it, update `privacy/index.html` in that repo to match; pushing publishes it.
 
 ## 1. Create the app record
 

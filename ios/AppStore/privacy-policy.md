@@ -9,4 +9,4 @@ Podrida Score does not collect, store or share any personal information.
 - **No network access.** The app works entirely offline and doesn't connect to any server.
 - **No tracking, analytics, advertising or third-party services.**
 
-If you have questions about this policy, contact [YOUR CONTACT EMAIL].
+If you have questions about this policy, contact albert.vp@gmail.com.
