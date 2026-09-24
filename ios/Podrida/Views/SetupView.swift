@@ -3,6 +3,7 @@ import SwiftUI
 /// The new-game screen: how many players, their names, and how many turns.
 struct SetupView: View {
     let onStart: (Game) -> Void
+    let onShowIntro: () -> Void
 
     @State private var names = Array(repeating: "", count: 4)
     @State private var turnCount = 10
@@ -11,12 +12,20 @@ struct SetupView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                Text("New game")
-                    .font(Typeface.typewriter(11))
-                    .textCase(.uppercase)
-                    .tracking(1.5)
-                    .foregroundStyle(Palette.rule)
-                    .padding(.bottom, 14)
+                HStack(alignment: .firstTextBaseline) {
+                    Text("New game")
+                        .font(Typeface.typewriter(11))
+                        .textCase(.uppercase)
+                        .tracking(1.5)
+                        .foregroundStyle(Palette.rule)
+                    Spacer()
+                    Button("How it works", action: onShowIntro)
+                        .font(Typeface.mono(12))
+                        .foregroundStyle(Palette.inkSoft)
+                        .underline(pattern: .dot)
+                        .frame(minHeight: 44)
+                }
+                .padding(.top, -14)
 
                 Text("Podrida\nScore")
                     .font(Typeface.typewriter(30))

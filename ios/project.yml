@@ -9,12 +9,18 @@ settings:
     SWIFT_VERSION: "6.0"
     MARKETING_VERSION: "1.0"
     CURRENT_PROJECT_VERSION: "1"
+packages:
+  Lottie:
+    url: https://github.com/airbnb/lottie-spm.git
+    from: 4.6.1
 targets:
   Podrida:
     type: application
     platform: iOS
     sources:
       - path: Podrida
+    dependencies:
+      - package: Lottie
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.albertvila.podrida

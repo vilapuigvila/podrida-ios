@@ -8,18 +8,27 @@
 
 /* Begin PBXBuildFile section */
 		06168C8B04B0BD876660C1D7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9E515D3B9389AE47281D2309 /* PrivacyInfo.xcprivacy */; };
+		1B0EF5896D2974E79A69BFFC /* onboarding-jazz.caf in Resources */ = {isa = PBXBuildFile; fileRef = F63912EBB5713915313F1782 /* onboarding-jazz.caf */; };
+		277580581552031287E8F56D /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 86F94A5B7B7591F7E99D0A0C /* Lottie */; };
 		32BB3D439ECF2F80EBF354DC /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303A8CA62955B46CB9C2138E /* RootView.swift */; };
 		3D14F64FD2654E4BDA1E5880 /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF25E69FD9CCC0651588DED3 /* GameStore.swift */; };
 		48D356E4A73F360522BFAF88 /* PodridaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABB85FD4734332E002DBFB8 /* PodridaApp.swift */; };
+		57165A5668FD72C36E3B73C0 /* call.json in Resources */ = {isa = PBXBuildFile; fileRef = FCE18282B0525632B210AE07 /* call.json */; };
 		5D240E4F838E458CB22C66C9 /* LedgerGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5DD8C549A8D8C800C5A31C /* LedgerGrid.swift */; };
+		70936089692CC99BE165AFB6 /* OnboardingMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E57DD2685064A383D914D5 /* OnboardingMusic.swift */; };
 		8CD9EA7D12226AA386A77306 /* TurnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7110EAF96E1E758429E524 /* TurnCell.swift */; };
+		9E8D26DC11B141CDF680B774 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBFC06E3180A761108CEF6D /* OnboardingView.swift */; };
 		A50A113A0D5865F1E58600C0 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A607214943B355C12FCE9D0 /* Game.swift */; };
 		AE640140E4B18760C3A99A7B /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDEF90385A6B4A1536439439 /* SetupView.swift */; };
 		C1161F58BEFBC3B9D7635E16 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 72CA7B1EAFD890FDD4AB7790 /* Assets.xcassets */; };
 		C2C87B90AF952CFA03F1A8FE /* LedgerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3634AADF1B7CC44A6EA834E /* LedgerField.swift */; };
 		C9EA2C0EAE9988D90AD91D19 /* GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16420C2F66411BF8E68B68D /* GameTests.swift */; };
 		CF8EC663EB93128F2D2B2B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A479C4522923A8BD617DA7E /* Theme.swift */; };
+		D2940EFE42DAA40B78571292 /* crown.json in Resources */ = {isa = PBXBuildFile; fileRef = F288DDB4B072B526B52B102E /* crown.json */; };
+		D2C9993A018E00F7353C578F /* stamp.json in Resources */ = {isa = PBXBuildFile; fileRef = 03FC118A170EC627F9109B6F /* stamp.json */; };
 		E873CD2537A2BB09A27EF3C6 /* LedgerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE1FCCFAC31585FA319FE3B /* LedgerView.swift */; };
+		F72DEE18858A9397518DE922 /* deal.json in Resources */ = {isa = PBXBuildFile; fileRef = B4CA0AE2A59EF77416DD340F /* deal.json */; };
+		F8AC19C66E52AD53A362E5E4 /* onboarding-chiptune.caf in Resources */ = {isa = PBXBuildFile; fileRef = FE0D66FEC2147B62D6652C41 /* onboarding-chiptune.caf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03FC118A170EC627F9109B6F /* stamp.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = stamp.json; sourceTree = "<group>"; };
 		0AB3FFC6D1F6698E1AC0FB51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0ABB85FD4734332E002DBFB8 /* PodridaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodridaApp.swift; sourceTree = "<group>"; };
 		1A607214943B355C12FCE9D0 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
@@ -44,14 +54,43 @@
 		9E515D3B9389AE47281D2309 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A3634AADF1B7CC44A6EA834E /* LedgerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerField.swift; sourceTree = "<group>"; };
 		AF25E69FD9CCC0651588DED3 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
+		B3E57DD2685064A383D914D5 /* OnboardingMusic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingMusic.swift; sourceTree = "<group>"; };
+		B4CA0AE2A59EF77416DD340F /* deal.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = deal.json; sourceTree = "<group>"; };
 		C16420C2F66411BF8E68B68D /* GameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTests.swift; sourceTree = "<group>"; };
 		CE5FC6CCA551D1C801C192F4 /* Podrida.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Podrida.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB7110EAF96E1E758429E524 /* TurnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnCell.swift; sourceTree = "<group>"; };
+		EBBFC06E3180A761108CEF6D /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		F288DDB4B072B526B52B102E /* crown.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = crown.json; sourceTree = "<group>"; };
+		F63912EBB5713915313F1782 /* onboarding-jazz.caf */ = {isa = PBXFileReference; path = "onboarding-jazz.caf"; sourceTree = "<group>"; };
+		FCE18282B0525632B210AE07 /* call.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = call.json; sourceTree = "<group>"; };
 		FDE1FCCFAC31585FA319FE3B /* LedgerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerView.swift; sourceTree = "<group>"; };
 		FDEF90385A6B4A1536439439 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
+		FE0D66FEC2147B62D6652C41 /* onboarding-chiptune.caf */ = {isa = PBXFileReference; path = "onboarding-chiptune.caf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		09C29349C308C2F017A14DD5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				277580581552031287E8F56D /* Lottie in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
+		3108E30F321FE469F0C52DE6 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				FCE18282B0525632B210AE07 /* call.json */,
+				F288DDB4B072B526B52B102E /* crown.json */,
+				B4CA0AE2A59EF77416DD340F /* deal.json */,
+				03FC118A170EC627F9109B6F /* stamp.json */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
 		324637F7F20176B4CECDFA73 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -71,6 +110,16 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		9A55564FE94C3DDD755E5E5E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FE0D66FEC2147B62D6652C41 /* onboarding-chiptune.caf */,
+				F63912EBB5713915313F1782 /* onboarding-jazz.caf */,
+				3108E30F321FE469F0C52DE6 /* Animations */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		A9787D8396D6790420EADBAF /* Podrida */ = {
 			isa = PBXGroup;
 			children = (
@@ -79,9 +128,19 @@
 				0ABB85FD4734332E002DBFB8 /* PodridaApp.swift */,
 				9E515D3B9389AE47281D2309 /* PrivacyInfo.xcprivacy */,
 				3A03BB06511C224A875E2E80 /* Model */,
+				9A55564FE94C3DDD755E5E5E /* Resources */,
 				BEDABB3111D5F1EA8A8FFA45 /* Views */,
 			);
 			path = Podrida;
+			sourceTree = "<group>";
+		};
+		BE0DD3E5B0FEDAEF4DB62067 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				B3E57DD2685064A383D914D5 /* OnboardingMusic.swift */,
+				EBBFC06E3180A761108CEF6D /* OnboardingView.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		BE7AFDB86EAC9E02DC4EA0FD /* PodridaTests */ = {
@@ -101,6 +160,7 @@
 				FDEF90385A6B4A1536439439 /* SetupView.swift */,
 				9A479C4522923A8BD617DA7E /* Theme.swift */,
 				EB7110EAF96E1E758429E524 /* TurnCell.swift */,
+				BE0DD3E5B0FEDAEF4DB62067 /* Onboarding */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -141,6 +201,7 @@
 			buildPhases = (
 				2AFB611F6BC26034E5743E74 /* Sources */,
 				14B4BC0670710C93A040681E /* Resources */,
+				09C29349C308C2F017A14DD5 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -148,6 +209,7 @@
 			);
 			name = Podrida;
 			packageProductDependencies = (
+				86F94A5B7B7591F7E99D0A0C /* Lottie */,
 			);
 			productName = Podrida;
 			productReference = CE5FC6CCA551D1C801C192F4 /* Podrida.app */;
@@ -177,6 +239,9 @@
 			);
 			mainGroup = F4FEA43EF512A7F938B1F404;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				51B63FC86989B139FC23E203 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 324637F7F20176B4CECDFA73 /* Products */;
 			projectDirPath = "";
@@ -195,6 +260,12 @@
 			files = (
 				C1161F58BEFBC3B9D7635E16 /* Assets.xcassets in Resources */,
 				06168C8B04B0BD876660C1D7 /* PrivacyInfo.xcprivacy in Resources */,
+				57165A5668FD72C36E3B73C0 /* call.json in Resources */,
+				D2940EFE42DAA40B78571292 /* crown.json in Resources */,
+				F72DEE18858A9397518DE922 /* deal.json in Resources */,
+				F8AC19C66E52AD53A362E5E4 /* onboarding-chiptune.caf in Resources */,
+				1B0EF5896D2974E79A69BFFC /* onboarding-jazz.caf in Resources */,
+				D2C9993A018E00F7353C578F /* stamp.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +281,8 @@
 				C2C87B90AF952CFA03F1A8FE /* LedgerField.swift in Sources */,
 				5D240E4F838E458CB22C66C9 /* LedgerGrid.swift in Sources */,
 				E873CD2537A2BB09A27EF3C6 /* LedgerView.swift in Sources */,
+				70936089692CC99BE165AFB6 /* OnboardingMusic.swift in Sources */,
+				9E8D26DC11B141CDF680B774 /* OnboardingView.swift in Sources */,
 				48D356E4A73F360522BFAF88 /* PodridaApp.swift in Sources */,
 				32BB3D439ECF2F80EBF354DC /* RootView.swift in Sources */,
 				AE640140E4B18760C3A99A7B /* SetupView.swift in Sources */,
@@ -463,6 +536,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		51B63FC86989B139FC23E203 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		86F94A5B7B7591F7E99D0A0C /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 51B63FC86989B139FC23E203 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C2ABB0140C961E0B3739F49B /* Project object */;
 }

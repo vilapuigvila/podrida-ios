@@ -32,6 +32,8 @@ for D in $PHONE $IPAD; do
   xcrun simctl status_bar $D override --time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 \
     --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100
   PREFS=$(xcrun simctl get_app_container $D $BID data)/Library/Preferences/$BID
+  # Skip the first-launch introduction so every capture shows the screen it seeds.
+  xcrun simctl spawn $D defaults write "$PREFS" hasSeenOnboarding -bool true
   for s in ledger warning crowd setup; do
     xcrun simctl terminate $D $BID 2>/dev/null || true
     if [[ $s == setup ]]; then
