@@ -637,29 +637,12 @@
     return false;
   }
 
-  function computeCumulativeScore(t, p) {
-    var own = computeCellScore(state.hands[t][p], state.won[t][p]);
-    if (own === null) return null;
-    var sum = 0;
-    for (var i = 0; i <= t; i++) {
-      var s = computeCellScore(state.hands[i][p], state.won[i][p]);
-      if (s !== null) sum += s;
-    }
-    return sum;
-  }
-
   function refreshCellScore(t, p) {
     var el = document.getElementById('score-' + t + '-' + p);
     if (!el) return;
-    var s = computeCumulativeScore(t, p);
+    var s = computeCellScore(state.hands[t][p], state.won[t][p]);
     el.textContent = (s === null) ? '\u2013' : s;
     el.classList.toggle('score-negative', s !== null && s < 0);
-  }
-
-  function refreshCellScoresFrom(t, p) {
-    for (var i = t; i < state.numTurns; i++) {
-      refreshCellScore(i, p);
-    }
   }
 
   function checkHandsSumViolation(t) {
@@ -857,7 +840,7 @@
             '<div class="top-title">Podrida Score</div>' +
             '<div class="top-meta">' + state.numTurns + ' turns &middot; ' + state.numPlayers + ' players</div>' +
             '<div class="top-meta">Exact call: +5, +3/hand &middot; Miss: &minus;5, &minus;3 per hand off</div>' +
-            '<div class="top-meta">Score is a running total, turn over turn</div>' +
+            '<div class="top-meta">Score is each turn&rsquo;s points; Total adds them up</div>' +
           '</div>' +
           '<button type="button" class="reset-btn" id="newGameBtn">New Game</button>' +
         '</div>' +
@@ -896,7 +879,7 @@
         var pp = parseInt(e.target.getAttribute('data-player'), 10);
         var raw = e.target.value;
         state.hands[tt][pp] = raw === '' ? null : Number(raw);
-        refreshCellScoresFrom(tt, pp);
+        refreshCellScore(tt, pp);
         updateTotalsRow();
         var justCompleted = isTurnComplete(tt);
         updateRowLocks();
@@ -916,7 +899,7 @@
         var pp = parseInt(e.target.getAttribute('data-player'), 10);
         var raw = e.target.value;
         state.won[tt][pp] = raw === '' ? null : Number(raw);
-        refreshCellScoresFrom(tt, pp);
+        refreshCellScore(tt, pp);
         updateTotalsRow();
         var justCompleted = isTurnComplete(tt);
         updateRowLocks();
@@ -926,8 +909,10 @@
       });
     });
 
-    for (var pi = 0; pi < state.numPlayers; pi++) {
-      refreshCellScoresFrom(0, pi);
+    for (var ti = 0; ti < state.numTurns; ti++) {
+      for (var pi = 0; pi < state.numPlayers; pi++) {
+        refreshCellScore(ti, pi);
+      }
     }
     updateHandsWarning();
 

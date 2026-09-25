@@ -20,12 +20,13 @@ struct ScoringTests {
     }
 
     /// Three turns, cross-checked against the web version.
-    @Test func runningTotalsTotalsAndLeader() {
+    @Test func turnPointsTotalsAndLeader() {
         var game = Game(playerNames: ["Ada", "Bo", "Cy"], turnCount: 3)
         game.hands = [[1, 0, 2], [0, 2, 1], [3, 1, 0]]
         game.won = [[1, 0, 0], [0, 2, 1], [1, 1, 0]]
 
-        #expect(game.runningTotals == [[8, 5, -11], [13, 16, -3], [2, 24, 2]])
+        let points = (0..<3).map { turn in (0..<3).map { game.points(turn: turn, player: $0) } }
+        #expect(points == [[8, 5, -11], [5, 11, 8], [-11, 8, 5]])
         #expect(game.totals == [2, 24, 2])
         #expect(game.leaders == [1])
     }
@@ -241,7 +242,7 @@ struct GameStoreTests {
 
         let game = GameStore(defaults: defaults).game
         #expect(game?.playerNames == ["Albert", "Bo"])
-        #expect(game?.runningTotals[0] == [11, -8])
+        #expect(game?.totals == [11, -8])
         #expect(defaults.string(forKey: GameStore.legacyWebKey) == nil)
         #expect(GameStore(defaults: defaults).game == game)
     }

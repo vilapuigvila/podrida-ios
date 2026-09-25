@@ -102,8 +102,7 @@ struct LedgerGrid: View {
     }
 
     private func cells(columnWidth: CGFloat) -> some View {
-        let runningTotals = game.runningTotals
-        return ScrollViewReader { reader in
+        ScrollViewReader { reader in
             ScrollView([.horizontal, .vertical]) {
                 LazyVStack(alignment: .leading, spacing: 0) {
                     ForEach(0..<game.turnCount, id: \.self) { turn in
@@ -112,7 +111,7 @@ struct LedgerGrid: View {
                                 TurnCell(
                                     called: $game.hands[turn][player],
                                     won: $game.won[turn][player],
-                                    total: runningTotals[turn][player],
+                                    points: game.points(turn: turn, player: player),
                                     turn: turn,
                                     player: player,
                                     playerName: game.playerNames[player],
