@@ -1,0 +1,53 @@
+name: iOS tests
+
+on:
+  push:
+    paths:
+      - "ios/**"
+      - ".github/workflows/ios-tests.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ios-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: macos-15
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pick an iPhone simulator
+        id: sim
+        run: |
+          udid=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          devices = json.load(sys.stdin)["devices"]
+          ios = sorted((r for r in devices if "iOS" in r), reverse=True)
+          print(next(d["udid"] for r in ios for d in devices[r] if d["name"].startswith("iPhone")))
+          ')
+          echo "udid=$udid" >> "$GITHUB_OUTPUT"
+          xcrun simctl list devices | grep "$udid"
+
+      - name: Run unit and UI tests
+        run: |
+          set +e
+          xcodebuild test \
+            -project ios/Podrida.xcodeproj -scheme Podrida \
+            -destination "platform=iOS Simulator,id=${{ steps.sim.outputs.udid }}" \
+            -resultBundlePath TestResults.xcresult \
+            > xcodebuild.log 2>&1
+          status=$?
+          grep -E "error:|Test Case .* (passed|failed)|✔|✘|Test run with|\*\* TEST" xcodebuild.log
+          tail -n 30 xcodebuild.log
+          exit $status
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            TestResults.xcresult
+            xcodebuild.log

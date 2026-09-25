@@ -23,7 +23,9 @@ xcodebuild test -project ios/Podrida.xcodeproj -scheme Podrida \
   '-only-testing:PodridaTests/TurnFlowTests/addingAPlayerReopensFinishedTurns()'
 ```
 
-The tests use Swift Testing, so a single test's `-only-testing` name needs the trailing `()`. Without it, the command matches nothing and still reports success.
+`.github/workflows/ios-tests.yml` runs the unit and UI tests on a `macos-15` runner, on any iPhone simulator it has, whenever a push touches `ios/`.
+
+The unit tests use Swift Testing, so a single test's `-only-testing` name needs the trailing `()`. Without it, the command matches nothing and still reports success.
 
 `ios/project.yml` (XcodeGen) is the source of truth for the Xcode project. Edit it rather than `project.pbxproj`, then regenerate. The generated project is committed so a fresh clone opens without XcodeGen. The one dependency is Lottie (`airbnb/lottie-spm`, Swift Package Manager, declared under `packages:` in `project.yml`). The web version has no tests.
 

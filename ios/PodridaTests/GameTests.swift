@@ -31,6 +31,30 @@ struct ScoringTests {
         #expect(game.leaders == [1])
     }
 
+    /// Each Score cell holds that turn's points alone, so a column adds up to its total.
+    @Test func scoreCellsAddUpToTheTotal() {
+        var game = Game(playerNames: ["Ada", "Bo"], turnCount: 3)
+        game.hands = [[1, 1], [1, 2], [nil, nil]]
+        game.won = [[1, 0], [0, 2], [nil, nil]]
+
+        #expect(game.points(turn: 1, player: 0) == -8)
+        #expect(game.points(turn: 1, player: 1) == 11)
+        let columnSums = (0..<2).map { player in
+            (0..<3).compactMap { game.points(turn: $0, player: player) }.reduce(0, +)
+        }
+        #expect(game.totals == columnSums)
+        #expect(game.totals == [0, 3])
+    }
+
+    @Test func unfinishedTurnAddsNothingToTheTotal() {
+        var game = Game(playerNames: ["Ada", "Bo"], turnCount: 2)
+        game.hands = [[1, 1], [2, nil]]
+        game.won = [[1, 0], [nil, nil]]
+
+        #expect(game.points(turn: 1, player: 0) == nil)
+        #expect(game.totals == [8, -8])
+    }
+
     @Test func tiedLeadersAllGetTheStamp() {
         var game = Game(playerNames: ["Ada", "Bo"], turnCount: 1)
         game.hands = [[0, 0]]
