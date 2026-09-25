@@ -14,13 +14,17 @@ concurrency:
 jobs:
   test:
     runs-on: macos-15
-    timeout-minutes: 40
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v4
 
-      - name: Pick an iPhone simulator
+      - name: Boot an iPhone simulator
         id: sim
         run: |
+          xcodebuild -version
           udid=$(xcrun simctl list devices available -j | python3 -c '
           import json, sys
           devices = json.load(sys.stdin)["devices"]
@@ -29,25 +33,37 @@ jobs:
           ')
           echo "udid=$udid" >> "$GITHUB_OUTPUT"
           xcrun simctl list devices | grep "$udid"
+          xcrun simctl boot "$udid"
+          xcrun simctl bootstatus "$udid"
 
-      - name: Run unit and UI tests
+      - name: Build for testing
+        timeout-minutes: 20
         run: |
-          set +e
-          xcodebuild test \
+          xcodebuild build-for-testing \
             -project ios/Podrida.xcodeproj -scheme Podrida \
             -destination "platform=iOS Simulator,id=${{ steps.sim.outputs.udid }}" \
-            -resultBundlePath TestResults.xcresult \
-            > xcodebuild.log 2>&1
-          status=$?
-          grep -E "error:|Test Case .* (passed|failed)|✔|✘|Test run with|\*\* TEST" xcodebuild.log
-          tail -n 30 xcodebuild.log
-          exit $status
+            -derivedDataPath DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            | tee build.log | grep -E "error:|warning: .*Podrida/|\*\* BUILD" || true
+          grep -q "\*\* TEST BUILD SUCCEEDED \*\*" build.log
 
-      - name: Upload test results
-        if: failure()
+      - name: Run unit and UI tests
+        timeout-minutes: 20
+        run: |
+          xcodebuild test-without-building \
+            -project ios/Podrida.xcodeproj -scheme Podrida \
+            -destination "platform=iOS Simulator,id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath DerivedData \
+            -resultBundlePath TestResults.xcresult \
+            -parallel-testing-enabled NO \
+            2>&1 | tee test.log
+
+      - name: Upload logs and results
+        if: failure() || cancelled()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: |
+            build.log
+            test.log
             TestResults.xcresult
-            xcodebuild.log
