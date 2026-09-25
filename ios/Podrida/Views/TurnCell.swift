@@ -1,10 +1,10 @@
 import SwiftUI
 
-/// One player's line for one turn: hands called, hands won, and the running score.
+/// One player's line for one turn: hands called, hands won, and the points they scored.
 struct TurnCell: View {
     @Binding var called: Int?
     @Binding var won: Int?
-    let total: Int?
+    let points: Int?
     let turn: Int
     let player: Int
     let playerName: String
@@ -22,14 +22,14 @@ struct TurnCell: View {
             divider
             VStack(spacing: 1) {
                 caption("Score")
-                Text(total.map { String($0) } ?? "–")
+                Text(points.map { String($0) } ?? "–")
                     .font(Typeface.mono(14, weight: .semibold))
-                    .foregroundStyle((total ?? 0) < 0 ? Palette.rule : Palette.ink)
+                    .foregroundStyle((points ?? 0) < 0 ? Palette.rule : Palette.ink)
                     .frame(height: 26)
             }
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("\(playerName), score after turn \(turn + 1)")
-            .accessibilityValue(total.map { String($0) } ?? "Not scored yet")
+            .accessibilityLabel("\(playerName), turn \(turn + 1), score")
+            .accessibilityValue(points.map { String($0) } ?? "Not scored yet")
             .opacity(lockedTo != nil ? 0.35 : 1)
         }
         .padding(.horizontal, 4)

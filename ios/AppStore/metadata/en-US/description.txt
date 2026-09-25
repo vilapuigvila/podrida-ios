@@ -5,7 +5,7 @@ It's a ledger, like the one you'd draw on paper: every player gets a column, eve
 SCORING
 • Exact call: 5 points, plus 3 for each hand won
 • Miss: minus 5, and minus 3 for each hand off
-• Each line shows the running total, so you always know where everyone stands
+• Each line shows what every player scored that turn, and the totals stay pinned at the bottom
 • The leader's total gets a high-score stamp
 
 THE RULE, CHECKED

@@ -29,7 +29,7 @@ The tests use Swift Testing, so a single test's `-only-testing` name needs the t
 
 ## Game rules (both versions)
 
-- Each Score cell shows the player's running total through that turn, not that turn's points. An exact call scores 5 + 3 per hand won; a miss scores −5 − 3 per hand off.
+- Each Score cell shows the points the player scored that turn, and the Total row adds them up. An exact call scores 5 + 3 per hand won; a miss scores −5 − 3 per hand off.
 - Turn n deals n hands, so no one can call more than n, its hands won can't add up to more than n, and once everyone's result is in they must add up to exactly n.
 - The active turn is the first incomplete one, and later turns are locked. A turn is complete when every cell is filled, no call is over the turn number, the calls don't add up to it, and the hands won do. Adding a player adds empty cells to earlier turns, so they reopen.
 
@@ -37,7 +37,7 @@ The tests use Swift Testing, so a single test's `-only-testing` name needs the t
 
 It's a single IIFE with one mutable `state` object: `numPlayers`, `numTurns`, `playerNames[]`, `hands[turn][player]`, `won[turn][player]` and `started`. An empty cell is `null`.
 
-- `renderSetup()` and `renderLedger()` rebuild `#app` with `innerHTML` and re-bind every listener. Typing in a cell doesn't re-render; it patches the DOM through `refreshCellScoresFrom`, `updateTotalsRow`, `updateRowLocks` and `updateHandsWarning`.
+- `renderSetup()` and `renderLedger()` rebuild `#app` with `innerHTML` and re-bind every listener. Typing in a cell doesn't re-render; it patches the DOM through `refreshCellScore`, `updateTotalsRow`, `updateRowLocks` and `updateHandsWarning`.
 - The rules are in `computeCellScore`, `getActiveTurnIndex`, `findCallOverTurn`, `checkHandsSumViolation` and `checkWonSumViolation`. All rule warnings share the one banner, `updateHandsWarning`.
 - It saves through a host-provided async `window.storage.get/set/delete(key, shared)` under the key `scorekeeper:state`. In a plain browser that API is missing and saving silently does nothing.
 
@@ -45,7 +45,7 @@ It's a single IIFE with one mutable `state` object: `numPlayers`, `numTurns`, `p
 
 Swift 6 language mode (strict concurrency), iOS 18+. `onScrollGeometryChange` and `TextField(text:selection:)` require iOS 18.
 
-- **`Model/Game.swift`** is the whole rule set as a value type: scoring, running totals, leaders, turn completion, and add/reset. Views never compute rules themselves. `Game`'s coding keys (`playerNames`, `hands`, `won`) match the web state on purpose; see saving below.
+- **`Model/Game.swift`** is the whole rule set as a value type: scoring, totals, leaders, turn completion, and add/reset. Views never compute rules themselves. `Game`'s coding keys (`playerNames`, `hands`, `won`) match the web state on purpose; see saving below.
 - **`Model/GameStore.swift`** holds `game: Game?` (`nil` shows setup) and saves it to `UserDefaults` in a `didSet`. On first launch it moves a game saved by the old web-view version of the app (key `webstorage.scorekeeper:state`, the web state JSON) into the native key.
 - **`RootView`** hands the ledger a hand-built `Binding<Game>`, not `Binding($store.game)`. After New Game sets the game to `nil`, SwiftUI still reads the old ledger's binding once, and the force-unwrapping binding crashes. The custom one falls back to the last game and drops late writes.
 - **`LedgerGrid`** pins the player names, the turn numbers and the totals row by keeping them outside the one two-axis `ScrollView` and offsetting them by its scroll position (`ScrollOffset`, read only by `Synced`). A pinned piece must use `.frame(minWidth: 0, …)` or `.frame(minHeight: 0, …)` before `.clipped()`. Without the zero minimum, the frame grows to its content's full size and pushes the totals off screen. Row height is a fixed constant shared by the turn column and the cells, so the two stay aligned.

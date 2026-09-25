@@ -62,18 +62,6 @@ struct Game: Codable, Equatable, Sendable {
         return nil
     }
 
-    /// Each cell's running total (the player's score through that turn), `nil` where the turn isn't filled in.
-    var runningTotals: [[Int?]] {
-        var sums = Array(repeating: 0, count: playerCount)
-        return (0..<turnCount).map { turn in
-            (0..<playerCount).map { player in
-                guard let points = points(turn: turn, player: player) else { return nil }
-                sums[player] += points
-                return sums[player]
-            }
-        }
-    }
-
     var totals: [Int] {
         (0..<playerCount).map { player in
             (0..<turnCount).reduce(0) { $0 + (points(turn: $1, player: player) ?? 0) }

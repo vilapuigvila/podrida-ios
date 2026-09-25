@@ -1,6 +1,6 @@
 # Podrida Score
 
-A scorekeeper for **Podrida**, the trick-taking card game where everyone calls how many hands they'll win each turn. It's a ledger: every player gets a column, every turn gets a line, and the running total stays pinned at the bottom.
+A scorekeeper for **Podrida**, the trick-taking card game where everyone calls how many hands they'll win each turn. It's a ledger: every player gets a column, every turn gets a line, and the totals stay pinned at the bottom.
 
 It exists as a single self-contained web page and as a native SwiftUI iOS app. The two share the same rules and look but no code.
 

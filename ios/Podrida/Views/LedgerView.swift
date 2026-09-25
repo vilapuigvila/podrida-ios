@@ -100,7 +100,7 @@ struct LedgerView: View {
                 Group {
                     Text("\(count(game.turnCount, "turn")) · \(count(game.playerCount, "player"))")
                     Text("Exact call: +5, +3/hand · Miss: −5, −3 per hand off")
-                    Text("Score is a running total, turn over turn")
+                    Text("Score is each turn's points; Total adds them up")
                 }
                 .font(Typeface.mono(11))
                 .foregroundStyle(Palette.inkSoft)

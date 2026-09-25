@@ -7,7 +7,7 @@ MONO = "/System/Library/Fonts/SFNSMono.ttf"
 
 SHOTS = [
     ("ledger", "Every player a column.\nEvery turn a line.",
-     "Hands called, hands won and a running score, all on one ledger."),
+     "Hands called, hands won and each turn's score, all on one ledger."),
     ("warning", "It knows the rule.",
      "When the calls add up to the turn, the ledger waits until someone changes theirs."),
     ("crowd", "Up to 24 players.",

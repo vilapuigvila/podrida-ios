@@ -30,7 +30,7 @@ struct OnboardingPage: Identifiable {
         ),
         OnboardingPage(
             id: 3, animation: "crown", title: "Crown the leader",
-            message: "Running totals stay pinned at the bottom, and whoever's ahead gets the high-score stamp.",
+            message: "Totals stay pinned at the bottom, and whoever's ahead gets the high-score stamp.",
             still: 0.6, music: .chiptune
         ),
     ]
