@@ -7,6 +7,9 @@ concurrency:
   group: testflight
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: macos-15
@@ -17,11 +20,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Ships a new marketing version every run (1.0.0 -> 1.0.1 -> ...). The build number
+      # itself isn't bumped here: manageAppVersionAndBuildNumber in ExportOptions.plist has
+      # xcodebuild ask App Store Connect for the next one during export.
+      - name: Bump marketing version
+        id: bump
+        run: |
+          new_version=$(python3 ios/tools/bump_marketing_version.py)
+          echo "new_version=$new_version" >> "$GITHUB_OUTPUT"
+          echo "Bumping marketing version to $new_version"
+
       - name: Install XcodeGen
         run: brew install xcodegen
 
       - name: Generate Xcode project
         run: cd ios && xcodegen generate
+
+      - name: Commit and tag the version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add ios/project.yml ios/Podrida.xcodeproj/project.pbxproj
+          git commit -m "Bump version to ${{ steps.bump.outputs.new_version }}"
+          git push origin HEAD:main
+          git tag "v${{ steps.bump.outputs.new_version }}"
+          git push origin "v${{ steps.bump.outputs.new_version }}"
 
       - name: Install App Store Connect API key
         env:
