@@ -12,13 +12,24 @@ permissions:
 
 jobs:
   release:
-    runs-on: macos-15
+    runs-on: macos-latest
     timeout-minutes: 45
     defaults:
       run:
         shell: bash
     steps:
       - uses: actions/checkout@v4
+
+      # App Store Connect now rejects uploads built with an older SDK than the one the
+      # runner defaults to (a run on 2026-09-26 failed: "built with the iOS 18.5 SDK...
+      # must be built with the iOS 26 SDK or later"). Pick the newest non-beta Xcode the
+      # runner has instead of trusting its default.
+      - name: Select latest available Xcode
+        run: |
+          latest=$(ls -d /Applications/Xcode_*.app 2>/dev/null | grep -vi beta | sort -V | tail -1)
+          echo "Selecting $latest"
+          sudo xcode-select -s "$latest"
+          xcodebuild -version
 
       # Ships a new marketing version every run (1.0.0 -> 1.0.1 -> ...). The build number
       # itself isn't bumped here: manageAppVersionAndBuildNumber in ExportOptions.plist has
