@@ -11,6 +11,6 @@
 	<key>signingStyle</key>
 	<string>automatic</string>
 	<key>manageAppVersionAndBuildNumber</key>
-	<false/>
+	<true/>
 </dict>
 </plist>
