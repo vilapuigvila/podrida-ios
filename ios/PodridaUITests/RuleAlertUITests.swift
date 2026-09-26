@@ -30,31 +30,36 @@ final class RuleAlertUITests: XCTestCase {
         app.launch()
     }
 
+    /// The rule alert, a custom view found by its accessibility identifier rather than a system alert.
+    private var overlay: XCUIElement { app.descendants(matching: .any)["blockingAlert"] }
+
+    /// A piece of text inside the alert, found the same way the ledger's own custom cells are.
+    private func overlayText(_ label: String) -> XCUIElement { app.descendants(matching: .any)[label] }
+
     func testTheAlertBlocksTheLedgerUntilACallIsChanged() {
         launch(with: Self.brokenGame)
-        let alert = app.alerts["Total hands called can’t equal 3"]
-        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        XCTAssertTrue(overlayText("Total hands called can’t equal 3").waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["New Game"].isEnabled)
         XCTAssertFalse(app.buttons["+ Add turn"].isEnabled)
 
         // Leaving the calls without fixing them brings the alert straight back.
-        alert.buttons["Change a Call"].tap()
+        app.buttons["Change a Call"].tap()
         let pau = app.textFields["Pau, turn 3, hands called"]
         XCTAssertTrue(pau.waitForExistence(timeout: 3))
         XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3))
         XCTAssertFalse(app.textFields["Pau, turn 3, hands won"].exists)
         app.toolbars.buttons["Done"].tap()
-        XCTAssertTrue(alert.waitForExistence(timeout: 3))
+        XCTAssertTrue(overlay.waitForExistence(timeout: 3))
 
         // Changing a call lifts the lock. The alert selects the call, so typing replaces it.
-        alert.buttons["Change a Call"].tap()
+        app.buttons["Change a Call"].tap()
         XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3))
         app.typeText("1")
         XCTAssertEqual(pau.value as? String, "1")
-        XCTAssertFalse(alert.waitForExistence(timeout: 2))
+        XCTAssertFalse(overlay.waitForExistence(timeout: 2))
         XCTAssertTrue(app.textFields["Pau, turn 3, hands won"].exists)
         app.toolbars.buttons["Done"].tap()
-        XCTAssertFalse(alert.waitForExistence(timeout: 2))
+        XCTAssertFalse(overlay.waitForExistence(timeout: 2))
         XCTAssertTrue(app.buttons["New Game"].isEnabled)
     }
 
@@ -65,19 +70,21 @@ final class RuleAlertUITests: XCTestCase {
         boWon.tap()
         app.typeText("1")
 
-        let alert = app.alerts["Too many hands won"]
-        XCTAssertTrue(alert.waitForExistence(timeout: 3))
+        // The alert comes up after a pause in typing, while the field it's about is still focused.
+        // A system alert would take the keyboard down here; the custom one must not.
+        XCTAssertTrue(overlayText("Too many hands won").waitForExistence(timeout: 3))
+        XCTAssertTrue(app.keyboards.firstMatch.exists, "keyboard should stay up while the alert is showing")
         XCTAssertFalse(app.buttons["New Game"].isEnabled)
         XCTAssertFalse(app.textFields["Bo, turn 1, hands called"].exists)
 
         // The alert sends the keyboard back to Bo's result, selected, so typing replaces it.
-        alert.buttons["Fix Hands Won"].tap()
+        app.buttons["Fix Hands Won"].tap()
         XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3))
         app.typeText("0")
         XCTAssertEqual(boWon.value as? String, "0")
-        XCTAssertFalse(alert.waitForExistence(timeout: 2))
+        XCTAssertFalse(overlay.waitForExistence(timeout: 2))
         app.toolbars.buttons["Done"].tap()
-        XCTAssertFalse(app.alerts.firstMatch.waitForExistence(timeout: 2))
+        XCTAssertFalse(overlay.waitForExistence(timeout: 2))
         XCTAssertTrue(app.buttons["New Game"].isEnabled)
         // Turn 1 is complete, so turn 2 opens.
         XCTAssertTrue(app.textFields["Ada, turn 2, hands called"].exists)
@@ -90,16 +97,18 @@ final class RuleAlertUITests: XCTestCase {
         adaCall.tap()
         app.typeText("2")
 
-        let alert = app.alerts["Can’t call more than 1"]
-        XCTAssertTrue(alert.waitForExistence(timeout: 3))
-        XCTAssertTrue(alert.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Ada’s call")).firstMatch.exists)
+        // Same pause-triggered case as above: the keyboard must stay up under the alert.
+        XCTAssertTrue(overlayText("Can’t call more than 1").waitForExistence(timeout: 3))
+        XCTAssertTrue(app.keyboards.firstMatch.exists, "keyboard should stay up while the alert is showing")
+        XCTAssertTrue(app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS %@", "Ada’s call")).firstMatch.exists)
         XCTAssertFalse(app.textFields["Ada, turn 1, hands won"].exists)
 
-        alert.buttons["Change a Call"].tap()
+        app.buttons["Change a Call"].tap()
         XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3))
         app.typeText("1")
         XCTAssertEqual(adaCall.value as? String, "1")
-        XCTAssertFalse(alert.waitForExistence(timeout: 2))
+        XCTAssertFalse(overlay.waitForExistence(timeout: 2))
         XCTAssertTrue(app.textFields["Ada, turn 1, hands won"].exists)
     }
 }

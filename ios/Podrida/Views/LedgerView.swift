@@ -12,28 +12,46 @@ struct LedgerView: View {
     /// The call and the result entered last, where the rule alert sends the keyboard back to.
     @State private var lastCall: LedgerField?
     @State private var lastResult: LedgerField?
-    /// Set while the rule alert hands the keyboard back, so the moment without focus doesn't re-raise it.
-    @State private var isReturningToFix = false
+    /// Bumped to force the focused field to reselect its number, when focus itself isn't changing.
+    @State private var reselectCount = 0
     @State private var sounds = ScoreSounds()
     /// The latest cell scored, waiting for its sound.
     @State private var scored: Scored?
+
+    /// While either alert shows, the keyboard stays up but its input and toolbar are blocked.
+    private var isOverlayShowing: Bool { isShowingRule || confirmation != nil }
 
     var body: some View {
         let activeTurn = game.activeTurn
         let brokenRule = game.brokenRule
         VStack(spacing: 0) {
             topBar
-            LedgerGrid(game: $game, activeTurn: activeTurn, brokenRule: brokenRule, focus: $focus)
+            LedgerGrid(
+                game: $game,
+                activeTurn: activeTurn,
+                brokenRule: brokenRule,
+                focus: $focus,
+                isInputBlocked: isOverlayShowing,
+                reselectCount: reselectCount
+            )
             // While typing, give the table the room; the actions come back with the keyboard's Done.
             if focus == nil {
                 actions
             }
         }
         // Until the numbers are fixed, nothing but the ones the rule is about can be changed (see LedgerGrid).
-        .alert(brokenRule.map(Self.title) ?? "", isPresented: $isShowingRule, presenting: brokenRule) { rule in
-            Button(rule.isAboutCalls ? "Change a Call" : "Fix Hands Won") { returnToFix(rule) }
-        } message: { rule in
-            Text(message(rule))
+        .blockingAlert(
+            isPresented: isShowingRule,
+            emoji: "⚠️",
+            title: brokenRule.map(Self.title) ?? "",
+            titleColor: Palette.rule,
+            accent: Palette.rule,
+            message: brokenRule.map(message)
+        ) {
+            if let brokenRule {
+                Button(brokenRule.isAboutCalls ? "Change a Call" : "Fix Hands Won") { returnToFix(brokenRule) }
+                    .buttonStyle(OutlineButtonStyle())
+            }
         }
         .sensoryFeedback(.error, trigger: isShowingRule) { _, showing in showing }
         .onChange(of: focus) { _, field in
@@ -54,6 +72,8 @@ struct LedgerView: View {
         .onAppear { enforceRule() }
         .onChange(of: game) { old, new in
             if let points = new.newlyScoredPoints(since: old) { scored = Scored(points: points) }
+            // A fix lifts the rule at once; the alert shouldn't linger once there's nothing to fix.
+            if new.brokenRule == nil { isShowingRule = false }
         }
         // Wait for a short pause in typing, so a two-digit entry plays one sound, for its final score.
         // Numbers that break a rule don't count yet, so they get no sound.
@@ -69,24 +89,31 @@ struct LedgerView: View {
                     let previous = field.previous(in: game)
                     let next = field.next(in: game)
                     Button("Previous field", systemImage: "chevron.up") { focus = previous }
-                        .disabled(previous == nil)
+                        .disabled(previous == nil || isOverlayShowing)
                     Button("Next field", systemImage: "chevron.down") { focus = next }
-                        .disabled(next == nil)
+                        .disabled(next == nil || isOverlayShowing)
                 }
                 Spacer()
                 Button("Done") { focus = nil }
                     .fontWeight(.semibold)
+                    .disabled(isOverlayShowing)
             }
         }
-        .alert(
-            confirmation?.title ?? "",
-            isPresented: Binding { confirmation != nil } set: { if !$0 { confirmation = nil } },
-            presenting: confirmation
-        ) { confirmation in
-            Button(confirmation.actionTitle, role: .destructive) { perform(confirmation) }
-            Button("Cancel", role: .cancel) {}
-        } message: { confirmation in
-            Text(confirmation.message)
+        .blockingAlert(
+            isPresented: confirmation != nil,
+            emoji: confirmation?.emoji ?? "⚠️",
+            title: confirmation?.title ?? "",
+            message: confirmation?.message
+        ) {
+            if let confirmation {
+                Button(confirmation.actionTitle) {
+                    perform(confirmation)
+                    self.confirmation = nil
+                }
+                .buttonStyle(PrimaryButtonStyle())
+                Button("Cancel") { self.confirmation = nil }
+                    .buttonStyle(DashedButtonStyle(tint: Palette.inkSoft))
+            }
         }
     }
 
@@ -144,7 +171,7 @@ struct LedgerView: View {
 
     /// Shows the rule alert if the numbers break a rule and the keyboard isn't in the ones it's about.
     private func enforceRule() {
-        guard let rule = game.brokenRule, !isShowingRule, !isReturningToFix else { return }
+        guard let rule = game.brokenRule, !isShowingRule else { return }
         switch focus {
         case .hands(rule.turn, _) where rule.isAboutCalls: return
         case .won(rule.turn, _) where !rule.isAboutCalls: return
@@ -152,7 +179,7 @@ struct LedgerView: View {
         }
     }
 
-    /// Puts the keyboard back on the number entered last that the rule is about, selected so typing replaces it.
+    /// Puts the keyboard on the number entered last that the rule is about, selected so typing replaces it.
     private func returnToFix(_ rule: BrokenRule) {
         let last = game.playerCount - 1
         let field: LedgerField? = switch rule.kind {
@@ -160,14 +187,13 @@ struct LedgerView: View {
         case .callsMatchTurn: lastCall?.turn == rule.turn ? lastCall : .hands(turn: rule.turn, player: last)
         case .tooManyWon, .tooFewWon: lastResult?.turn == rule.turn ? lastResult : .won(turn: rule.turn, player: last)
         }
-        // Clearing and resetting the focus is what selects the number; wait for the alert to dismiss
-        // first, or it takes the focus with it.
-        isReturningToFix = true
-        focus = nil
-        Task {
-            try? await Task.sleep(for: .milliseconds(400))
+        isShowingRule = false
+        // Moving focus to the field selects it; if it's already there, focus won't change, so bump
+        // the reselect count instead.
+        if focus == field {
+            reselectCount += 1
+        } else {
             focus = field
-            isReturningToFix = false
         }
     }
 
@@ -233,6 +259,13 @@ private enum Confirmation {
         switch self {
         case .newGame: "Start New Game"
         case .resetScores: "Reset Scores"
+        }
+    }
+
+    var emoji: String {
+        switch self {
+        case .newGame: "🔄"
+        case .resetScores: "🗑️"
         }
     }
 }

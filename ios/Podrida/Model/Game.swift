@@ -68,14 +68,23 @@ struct Game: Codable, Equatable, Sendable {
         }
     }
 
+    /// Whether any cell anywhere has been scored yet.
+    private var hasAnyScore: Bool {
+        (0..<turnCount).contains { turn in (0..<playerCount).contains { points(turn: turn, player: $0) != nil } }
+    }
+
     /// Players holding the top total; empty until any score has been entered.
     var leaders: Set<Int> {
-        let hasScore = (0..<turnCount).contains { turn in
-            (0..<playerCount).contains { points(turn: turn, player: $0) != nil }
-        }
         let totals = totals
-        guard hasScore, let best = totals.max() else { return [] }
+        guard hasAnyScore, let best = totals.max() else { return [] }
         return Set(totals.indices.filter { totals[$0] == best })
+    }
+
+    /// Players holding the bottom total, when totals differ; empty before any score, or when everyone's tied.
+    var trailers: Set<Int> {
+        let totals = totals
+        guard hasAnyScore, let best = totals.max(), let worst = totals.min(), best != worst else { return [] }
+        return Set(totals.indices.filter { totals[$0] == worst })
     }
 
     // MARK: Turn flow

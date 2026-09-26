@@ -13,6 +13,10 @@ struct TurnCell: View {
     /// results), and the rest is dimmed.
     var lockedTo: LockedPart?
     var focus: FocusState<LedgerField?>.Binding
+    /// While the blocking alert shows, no typing may change a number.
+    var isInputBlocked: Bool = false
+    /// Bumped to reselect the focused cell's number, when the alert sends the keyboard back to it.
+    var reselectCount: Int = 0
 
     var body: some View {
         VStack(spacing: 0) {
@@ -53,9 +57,13 @@ struct TurnCell: View {
             caption(title)
             // Only the turn being played gets text fields; every other line is plain text.
             if editable {
-                NumberField(value: value, isFocused: focus.wrappedValue == field)
-                    .focused(focus, equals: field)
-                    .accessibilityLabel("\(playerName), turn \(turn + 1), \(spoken)")
+                NumberField(
+                    value: isInputBlocked ? .constant(value.wrappedValue) : value,
+                    isFocused: focus.wrappedValue == field,
+                    reselectCount: reselectCount
+                )
+                .focused(focus, equals: field)
+                .accessibilityLabel("\(playerName), turn \(turn + 1), \(spoken)")
             } else {
                 Text(value.wrappedValue.map { String($0) } ?? "–")
                     .font(Typeface.mono(15))
@@ -81,6 +89,7 @@ enum LockedPart {
 private struct NumberField: View {
     @Binding var value: Int?
     let isFocused: Bool
+    var reselectCount: Int = 0
 
     @State private var selection: TextSelection?
 
@@ -88,8 +97,14 @@ private struct NumberField: View {
         TextField("", text: text, selection: $selection, prompt: Text("–").foregroundStyle(Palette.line))
             // Select the whole value on entry, so typing replaces it instead of appending digits.
             .onChange(of: isFocused) { _, focused in
-                guard focused, let current = value.map({ String($0) }) else { return }
-                selection = TextSelection(range: current.startIndex..<current.endIndex)
+                guard focused else { return }
+                selectAll()
+            }
+            // The alert's button can send the keyboard back to a field that's already focused, so
+            // reselecting needs its own trigger, not just the focus change above.
+            .onChange(of: reselectCount) { _, _ in
+                guard isFocused else { return }
+                selectAll()
             }
             .keyboardType(.numberPad)
             .multilineTextAlignment(.center)
@@ -110,5 +125,11 @@ private struct NumberField: View {
             let digits = newValue.filter { $0.isASCII && $0.isNumber }.prefix(3)
             value = digits.isEmpty ? nil : Int(digits)
         }
+    }
+
+    /// Selects the whole value, so the next digit typed replaces it instead of appending.
+    private func selectAll() {
+        guard let current = value.map({ String($0) }) else { return }
+        selection = TextSelection(range: current.startIndex..<current.endIndex)
     }
 }

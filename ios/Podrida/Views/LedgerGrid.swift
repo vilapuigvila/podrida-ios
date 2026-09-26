@@ -8,6 +8,10 @@ struct LedgerGrid: View {
     /// The rule the game breaks right now. While there is one, only the numbers it's about can be edited.
     let brokenRule: BrokenRule?
     var focus: FocusState<LedgerField?>.Binding
+    /// While the blocking alert shows, no typing may change a number.
+    let isInputBlocked: Bool
+    /// Bumped to reselect the focused cell's number, when the alert sends the keyboard back to it.
+    let reselectCount: Int
 
     @State private var scroll = ScrollOffset()
 
@@ -117,7 +121,9 @@ struct LedgerGrid: View {
                                     playerName: game.playerNames[player],
                                     isEditable: isEditable(turn),
                                     lockedTo: lockedPart(turn),
-                                    focus: focus
+                                    focus: focus,
+                                    isInputBlocked: isInputBlocked,
+                                    reselectCount: reselectCount
                                 )
                                 .frame(width: columnWidth, height: Self.rowHeight)
                                 .id(CellID(turn: turn, player: player))
@@ -150,6 +156,7 @@ struct LedgerGrid: View {
     private func footer(columnWidth: CGFloat) -> some View {
         let totals = game.totals
         let leaders = game.leaders
+        let trailers = game.trailers
         return HStack(spacing: 0) {
             cornerLabel("Total")
             Synced(offset: scroll, axis: .horizontal) {
@@ -158,6 +165,7 @@ struct LedgerGrid: View {
                         TotalCell(
                             total: totals[player],
                             isLeader: leaders.contains(player),
+                            isTrailer: trailers.contains(player),
                             playerName: game.playerNames[player]
                         )
                         .frame(width: columnWidth)
@@ -243,17 +251,18 @@ private struct PlayerNameField: View {
     }
 }
 
-/// A player's total, with the brass "high score" stamp on the leader.
+/// A player's total: green with the brass "high score" stamp on the leader, red on the trailer.
 private struct TotalCell: View {
     let total: Int
     let isLeader: Bool
+    let isTrailer: Bool
     let playerName: String
 
     var body: some View {
         VStack(spacing: 4) {
             Text(total, format: .number)
                 .font(Typeface.mono(15, weight: .bold))
-                .foregroundStyle(isLeader ? Palette.brass : Palette.ink)
+                .foregroundStyle(color)
             if isLeader {
                 Text("High score")
                     .font(Typeface.typewriter(8))
@@ -268,7 +277,19 @@ private struct TotalCell: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(playerName) total")
-        .accessibilityValue(isLeader ? "\(total), high score" : "\(total)")
+        .accessibilityValue(accessibilityValue)
+    }
+
+    private var color: Color {
+        if isLeader { return Palette.green }
+        if isTrailer { return Palette.rule }
+        return Palette.ink
+    }
+
+    private var accessibilityValue: String {
+        if isLeader { return "\(total), high score" }
+        if isTrailer { return "\(total), lowest score" }
+        return "\(total)"
     }
 }
 

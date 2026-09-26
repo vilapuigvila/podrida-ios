@@ -29,6 +29,17 @@ struct ScoringTests {
         #expect(points == [[8, 5, -11], [5, 11, 8], [-11, 8, 5]])
         #expect(game.totals == [2, 24, 2])
         #expect(game.leaders == [1])
+        #expect(game.trailers == [0, 2])
+    }
+
+    /// A single lowest total is the only trailer, distinct from the leader.
+    @Test func lowestTotalAloneIsTheTrailer() {
+        var game = Game(playerNames: ["Ada", "Bo"], turnCount: 1)
+        game.hands = [[1, 0]]
+        game.won = [[1, 0]]
+        #expect(game.totals == [8, 5])
+        #expect(game.leaders == [0])
+        #expect(game.trailers == [1])
     }
 
     /// Each Score cell holds that turn's points alone, so a column adds up to its total.
@@ -60,6 +71,8 @@ struct ScoringTests {
         game.hands = [[0, 0]]
         game.won = [[0, 0]]
         #expect(game.leaders == [0, 1])
+        // Tied totals have no lowest to mark, same as they have no single leader.
+        #expect(game.trailers.isEmpty)
     }
 
     @Test func newlyScoredPointsFollowTheCellJustFilledIn() {
@@ -84,7 +97,9 @@ struct ScoringTests {
     }
 
     @Test func noLeaderBeforeAnyScore() {
-        #expect(Game(playerNames: ["Ada", "Bo"], turnCount: 2).leaders.isEmpty)
+        let game = Game(playerNames: ["Ada", "Bo"], turnCount: 2)
+        #expect(game.leaders.isEmpty)
+        #expect(game.trailers.isEmpty)
     }
 }
 

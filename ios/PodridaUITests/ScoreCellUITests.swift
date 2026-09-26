@@ -39,7 +39,7 @@ final class ScoreCellUITests: XCTestCase {
         XCTAssertEqual(value(of: "Bo, turn 2, score"), "11")
         XCTAssertEqual(value(of: "Ada, turn 3, score"), "Not scored yet")
 
-        XCTAssertEqual(value(of: "Ada total"), "0")
+        XCTAssertEqual(value(of: "Ada total"), "0, lowest score")
         XCTAssertEqual(value(of: "Bo total"), "3, high score")
     }
 }

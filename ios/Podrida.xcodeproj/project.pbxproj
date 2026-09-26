@@ -18,6 +18,8 @@
 		57165A5668FD72C36E3B73C0 /* call.json in Resources */ = {isa = PBXBuildFile; fileRef = FCE18282B0525632B210AE07 /* call.json */; };
 		5D240E4F838E458CB22C66C9 /* LedgerGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5DD8C549A8D8C800C5A31C /* LedgerGrid.swift */; };
 		70936089692CC99BE165AFB6 /* OnboardingMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E57DD2685064A383D914D5 /* OnboardingMusic.swift */; };
+		7BFB667C3587935E89820B47 /* BlockingAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D830D21781CD8C1C30F59319 /* BlockingAlert.swift */; };
+		812C4F2FFCF3BD56A7DF9C5C /* ScoreCellUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4FB93A08849D6A33496CA5 /* ScoreCellUITests.swift */; };
 		8CD9EA7D12226AA386A77306 /* TurnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7110EAF96E1E758429E524 /* TurnCell.swift */; };
 		9E8D26DC11B141CDF680B774 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBFC06E3180A761108CEF6D /* OnboardingView.swift */; };
 		A50A113A0D5865F1E58600C0 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A607214943B355C12FCE9D0 /* Game.swift */; };
@@ -25,7 +27,6 @@
 		C1161F58BEFBC3B9D7635E16 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 72CA7B1EAFD890FDD4AB7790 /* Assets.xcassets */; };
 		C2C87B90AF952CFA03F1A8FE /* LedgerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3634AADF1B7CC44A6EA834E /* LedgerField.swift */; };
 		C8A42A0D52A45DE22878BFD3 /* RuleAlertUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C6F07765505EF608F1EB0F /* RuleAlertUITests.swift */; };
-		3F1B7E2A9C4D5E6F70812A3B /* ScoreCellUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2C8D3E4F6071829304B5C6 /* ScoreCellUITests.swift */; };
 		C9EA2C0EAE9988D90AD91D19 /* GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16420C2F66411BF8E68B68D /* GameTests.swift */; };
 		CF8EC663EB93128F2D2B2B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A479C4522923A8BD617DA7E /* Theme.swift */; };
 		D2940EFE42DAA40B78571292 /* crown.json in Resources */ = {isa = PBXBuildFile; fileRef = F288DDB4B072B526B52B102E /* crown.json */; };
@@ -65,7 +66,7 @@
 		63CCF34401E1B489728D228F /* PodridaTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PodridaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72CA7B1EAFD890FDD4AB7790 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		74C6F07765505EF608F1EB0F /* RuleAlertUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleAlertUITests.swift; sourceTree = "<group>"; };
-		5A2C8D3E4F6071829304B5C6 /* ScoreCellUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreCellUITests.swift; sourceTree = "<group>"; };
+		7B4FB93A08849D6A33496CA5 /* ScoreCellUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreCellUITests.swift; sourceTree = "<group>"; };
 		841B37B4190C33107FAFB1A4 /* score-gain.caf */ = {isa = PBXFileReference; path = "score-gain.caf"; sourceTree = "<group>"; };
 		9A479C4522923A8BD617DA7E /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		9E515D3B9389AE47281D2309 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -76,6 +77,7 @@
 		C16420C2F66411BF8E68B68D /* GameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTests.swift; sourceTree = "<group>"; };
 		C6082D7E3BAF1994319F5CFA /* score-loss.caf */ = {isa = PBXFileReference; path = "score-loss.caf"; sourceTree = "<group>"; };
 		CE5FC6CCA551D1C801C192F4 /* Podrida.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Podrida.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D830D21781CD8C1C30F59319 /* BlockingAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingAlert.swift; sourceTree = "<group>"; };
 		EB7110EAF96E1E758429E524 /* TurnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnCell.swift; sourceTree = "<group>"; };
 		EBBFC06E3180A761108CEF6D /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		F288DDB4B072B526B52B102E /* crown.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = crown.json; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 		BEDABB3111D5F1EA8A8FFA45 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D830D21781CD8C1C30F59319 /* BlockingAlert.swift */,
 				2E5DD8C549A8D8C800C5A31C /* LedgerGrid.swift */,
 				FDE1FCCFAC31585FA319FE3B /* LedgerView.swift */,
 				303A8CA62955B46CB9C2138E /* RootView.swift */,
@@ -191,7 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				74C6F07765505EF608F1EB0F /* RuleAlertUITests.swift */,
-				5A2C8D3E4F6071829304B5C6 /* ScoreCellUITests.swift */,
+				7B4FB93A08849D6A33496CA5 /* ScoreCellUITests.swift */,
 			);
 			path = PodridaUITests;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BFB667C3587935E89820B47 /* BlockingAlert.swift in Sources */,
 				A50A113A0D5865F1E58600C0 /* Game.swift in Sources */,
 				3D14F64FD2654E4BDA1E5880 /* GameStore.swift in Sources */,
 				C2C87B90AF952CFA03F1A8FE /* LedgerField.swift in Sources */,
@@ -361,7 +365,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8A42A0D52A45DE22878BFD3 /* RuleAlertUITests.swift in Sources */,
-				3F1B7E2A9C4D5E6F70812A3B /* ScoreCellUITests.swift in Sources */,
+				812C4F2FFCF3BD56A7DF9C5C /* ScoreCellUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
