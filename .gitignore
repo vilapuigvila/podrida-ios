@@ -45,9 +45,12 @@ iOSInjectionProject/
 *.mobileprovision
 *.p12
 *.cer
+*.p8
 .env
 .env.*
 
 # Local tools
 .claude/settings.local.json
 .playwright-mcp/
+__pycache__/
+*.pyc
