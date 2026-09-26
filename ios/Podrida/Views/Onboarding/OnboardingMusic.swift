@@ -11,7 +11,7 @@ final class OnboardingMusic {
         /// The files peak at -1 dBTP; these even out their loudness, well below full scale.
         var volume: Float {
             switch self {
-            case .jazz: 0.48
+            case .jazz: 0.38
             case .chiptune: 0.63
             }
         }

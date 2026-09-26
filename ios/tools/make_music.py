@@ -265,7 +265,8 @@ def musicbox():
     return track.finish(room=2.4, mix=0.36)
 
 
-def jazz():
+def jazz(comp=0.6, lead=0.6):
+    """`comp` and `lead` scale the chords and the vibes: loud, they saturate a phone speaker."""
     track = Track(bpm=100, beats=32)
     swing = 2 / 3  # the second eighth of each beat falls two-thirds of the way through it
     # Plain triads above 500 Hz: lower, a phone speaker has to boost and strain to play them.
@@ -289,7 +290,7 @@ def jazz():
         start = bar * 4
         chord = voicings[bar % 4]
         # Comp on 1 and on the swung "and" of 2, strummed so the notes' attacks don't peak together.
-        for hit, gain in ((0, 0.12), (1 + swing, 0.09)):
+        for hit, gain in ((0, 0.12 * comp), (1 + swing, 0.09 * comp)):
             for index, tone in enumerate(chord):
                 track.add(epiano(note(tone), 1.6), start + hit + index * 0.04 + humanize(0.01), gain=gain, pan=-0.25)
         for beat, tone in enumerate(walk[bar]):
@@ -301,7 +302,7 @@ def jazz():
         for beat in (1, 3):
             track.add(noise(0.35, 8, tilt=False) * 0.4, start + beat - 0.1, gain=0.05, pan=0.3)
     for bar, beat, name, length in melody:
-        track.add(vibes(note(name), max(1.4, length * track.beat * 2)), bar * 4 + beat + humanize(0.01), gain=0.16, pan=0.25)
+        track.add(vibes(note(name), max(1.4, length * track.beat * 2)), bar * 4 + beat + humanize(0.01), gain=0.16 * lead, pan=0.25)
     return track.finish(room=1.4, mix=0.22, highpass=110)
 
 
