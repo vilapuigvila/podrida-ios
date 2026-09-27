@@ -26,7 +26,7 @@ xcodebuild test -project ios/Podrida.xcodeproj -scheme Podrida \
 maestro test ios/.maestro/
 ```
 
-`.github/workflows/ios-tests.yml` runs the unit and UI tests on a `macos-15` runner, on any iPhone simulator it has, whenever a pull request touching `ios/` is opened, updated, or reopened.
+`.github/workflows/ios-tests.yml` runs the unit and UI tests on a `macos-15` runner, on any iPhone simulator it has, when a pull request touching `ios/` is merged into `main` (or when run by hand).
 
 The unit tests use Swift Testing, so a single test's `-only-testing` name needs the trailing `()`. Without it, the command matches nothing and still reports success.
 

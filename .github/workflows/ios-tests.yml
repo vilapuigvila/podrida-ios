@@ -2,6 +2,8 @@ name: iOS tests
 
 on:
   pull_request:
+    types: [closed]
+    branches: [main]
     paths:
       - "ios/**"
       - ".github/workflows/ios-tests.yml"
@@ -13,6 +15,8 @@ concurrency:
 
 jobs:
   test:
+    # A closed pull request that wasn't merged doesn't run the tests.
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: macos-15
     timeout-minutes: 45
     defaults:
@@ -20,6 +24,9 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The merge commit on main; empty on a manual run, which checks out the chosen branch.
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Boot an iPhone simulator
         id: sim
